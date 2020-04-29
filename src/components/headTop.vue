@@ -3,9 +3,12 @@
     <el-container>
       <el-header class="my-header">
         <div class="left">
-          <img src="../assets/logo2.png" alt />
+          <!-- <img src="../assets/top.jpg" alt /> -->
           <!-- <el-button></el-button> -->
+          <p>DormManagementSystem</p>
         </div>
+
+        <!-- 全屏 -->
 
         <div class="btn-fullscreen" @click="handleFullScreen">
           <el-tooltip effect="dark" :content="fullscreen ? `取消全屏`:`全屏显示`" placement="bottom">
@@ -15,22 +18,22 @@
 
         <!-- 消息 -->
 
-        <div class="messages">
+        <!-- <div class="messages">
           <div class="one">
             <el-badge :value="3" class="item">
               <i class="el-icon-message" @click="drawer = true"></i>
             </el-badge>
           </div>
-        </div>
+        </div> -->
 
-        <!-- 全屏 -->
+        
 
-        <el-drawer
+        <!-- <el-drawer
           title="消息通知"
           :visible.sync="drawer"
           :direction="direction"
-          :before-close="handleClose"
-        >
+          :before-close="handleClose">
+          
           <el-card style="position: relative;" class="elcard10">
             <div class="card">
               <div class="something">
@@ -53,7 +56,7 @@
               <div class="something"></div>
             </div>
           </el-card>
-        </el-drawer>
+        </el-drawer> -->
 
         <!-- 用户 -->
         <div class="right">
@@ -156,12 +159,18 @@ body {
   /* float: right; */
   position: absolute;
   top: 0;
-  right: 20px;
+  right: 40px;
 }
 .left img {
   float: left;
   width: 150px;
-  height: 60px;
+  height: 65px;
+}
+.left p{
+  font-size: 28px;
+  margin-top: 0px;
+  font-style:inherit;
+  color: deepskyblue;
 }
 .left {
   margin-left: 15px;
@@ -173,21 +182,20 @@ body {
   /* display: block; */
   /* float: right; */
 }
-.messages {
+/* .messages {
   position: absolute;
-  right: 135px;
-  top: -2px;
+  right: 110px;
+  top: 0px;
 }
 .messages .one i {
   display: block;
   position: absolute;
   right: 6px;
-  top: -1px;
   font-size: 20px;
 }
 .item {
-  margin-top: 20px;
-}
+  margin-top: -20px;
+} */
 .elcard10 {
   margin: 10px 10px;
 }

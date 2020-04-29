@@ -4,135 +4,93 @@
     <el-container style="height:100%">
       <div style="border-right:1px solid #dcdfe6;" :style="height" class="leftm">
 
-  
         <el-aside width="200px">
-
-          
+  
           <el-menu :default-active="$route.path" style="min-height: 100%;" router>
             <el-menu-item index="/home/first">
               <i class="el-icon-odometer"></i>
-              <span slot="title">物资采购系统</span>
+              <span slot="title" class="">学生宿舍管理系统</span>
             </el-menu-item>
             
             <el-submenu index="2">
               <template slot="title">
                 <i class="el-icon-aim"></i>
-                <span>系统管理</span>
+                <span>宿舍管理员管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/home/peopleTable">人员管理</el-menu-item>
+                <el-menu-item index="/home/housemasterInfo">基本信息</el-menu-item>
               </el-menu-item-group>
 
-              <el-menu-item-group>
-                <el-menu-item index="/home/deptList">部门管理</el-menu-item>
-              </el-menu-item-group>
+              <!-- <el-menu-item-group>
+                <el-menu-item index="/home/housemasterAllot">人员分配</el-menu-item>
+              </el-menu-item-group> -->
             </el-submenu>
 
             <el-submenu index="3">
               <template slot="title">
                 <i class="el-icon-truck"></i>
-                <span>物资管理</span>
+                <span>学生管理</span>
               </template>
 
               <el-menu-item-group>
-                <el-menu-item index="/home/materialNum">物资编码申请</el-menu-item>
+                <el-menu-item index="/home/studentInfo">基本信息</el-menu-item>
               </el-menu-item-group>
 
-              <el-menu-item-group>
-                <el-menu-item index="/home/materialInfo">物资编码审批</el-menu-item>
-              </el-menu-item-group>
-
-              <el-menu-item-group>
-                <el-menu-item index="/home/materialD">打印物资数据</el-menu-item>
-              </el-menu-item-group>
             </el-submenu>
 
             <el-submenu index="4">
               <template slot="title">
                 <i class="el-icon-shopping-bag-1"></i>
-                <span>采购管理</span>
+                <span>宿舍管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/home/needPlan">需求计划申请</el-menu-item>
+                <el-menu-item index="/home/dormInfo">基本信息</el-menu-item>
               </el-menu-item-group>
 
               <el-menu-item-group>
-                <el-menu-item index="/home/needPlanp">需求计划审批</el-menu-item>
+                <el-menu-item index="/home/sanitation">卫生情况</el-menu-item>
               </el-menu-item-group>
 
-              <el-menu-item-group>
-                <el-menu-item index="/home/pruchase">请购</el-menu-item>
-              </el-menu-item-group>
+              <!-- <el-menu-item-group>
+                <el-menu-item index="/home/bed">就寝信息</el-menu-item>
+              </el-menu-item-group> -->
 
               <el-menu-item-group>
-                <el-menu-item index="/home/No">请购通过</el-menu-item>
+                <el-menu-item index="/home/repaired">报修记录</el-menu-item>
               </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="/home/latereturn">晚归记录</el-menu-item>
+              </el-menu-item-group>
+              <!-- <el-menu-item-group>
+                <el-menu-item index="/home/watertransfer">搬水记录</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="/home/waterdeliver">送水记录</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="/home/leavescholl">离校时间</el-menu-item>
+              </el-menu-item-group> -->
             </el-submenu>
-
-              <el-menu-item index="/home/webMap">
-              <i class="el-icon-discover"></i>
-              <span slot="title">地图查看</span>
-            </el-menu-item>
-
-            <el-menu-item index="/home/materialD">
-              <i class="el-icon-s-claim"></i>
-              <span slot="title">单据管理</span>
-            </el-menu-item>
-
-            <el-menu-item index="/home/callme">
-              <i class="el-icon-phone"></i>
-              <span slot="title">请联系我</span>
-            </el-menu-item>
-
             <el-submenu index="5">
               <template slot="title">
                 <i class="el-icon-refresh"></i>
-                <span>出入库管理</span>
+                <span>用户管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/home/No">物资接收</el-menu-item>
-              </el-menu-item-group>
-
-              <el-menu-item-group>
-                <el-menu-item index="/home/No">物资检验</el-menu-item>
-              </el-menu-item-group>
-
-              <el-menu-item-group>
-                <el-menu-item index="/home/No">物资入库</el-menu-item>
-              </el-menu-item-group>
-
-              <el-menu-item-group>
-                <el-menu-item index="/home/No">物资出库</el-menu-item>
+                <el-menu-item index="/home/userInfo">用户信息</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
-
-            <el-submenu index="6">
-              <template slot="title">
-                <i class="el-icon-house"></i>
-                <span>仓库管理</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="/home/No">仓库维护</el-menu-item>
-              </el-menu-item-group>
-
-              <el-menu-item-group>
-                <el-menu-item index="/home/No">货位维护</el-menu-item>
-              </el-menu-item-group>
-
-              <el-menu-item-group>
-                <el-menu-item index="/home/No">查看库存</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-
-          
+              <!-- <el-menu-item index="/home/webMap">
+              <i class="el-icon-discover"></i>
+              <span slot="title">地图查看</span>
+            </el-menu-item> -->
           </el-menu>
         </el-aside>
       </div>
 
       <el-container>
-        <!-- 主要内容 -->
+        <!-- 主要内容：显示左边菜单的内容 -->
         <el-main>
-          <!-- <web-map></web-map> -->
 
           <div class="bar">
             <nav-bar></nav-bar>
@@ -148,11 +106,11 @@
 
 <script>
 import headTop from "./headTop.vue";
-import webMap from "../page/webMap.vue";
-import userList from "../page/userList";
-import charts from "../page/someCharts";
-import materialInfo from "../page/materialInfo";
+// import webMap from "../page/webMap.vue";
+// import charts from "../page/someCharts.vue";
 import navBar from "../components/navBar";
+import dormInfo from "../page/dormInfo.vue";
+import sanitation from "../page/sanitation.vue";
 export default {
   data() {
     return {
@@ -164,8 +122,9 @@ export default {
   },
   components: {
     headTop,
-    webMap,
-    navBar
+    // webMap,
+    navBar,
+    dormInfo
   },
   mounted() {},
   methods: {
@@ -227,4 +186,5 @@ body {
 .el-menu-item-group__title {
   padding: 0px 0px 0px 20px;
 }
+
 </style>

@@ -4,23 +4,22 @@ import home from '@/components/home.vue'
 import login from '@/components/login.vue'
 import zhuce from '@/components/zhuce.vue'
 import headTop from '@/components/headTop.vue'
-import someCharts from '@/page/someCharts.vue'
-import webMap from '@/page/webMap.vue'
-import userList from '@/page/userList.vue'
-import materialInfo from '@/page/materialInfo.vue'
-import peopleTable from '@/page/peopleTable.vue'
+// import someCharts from '@/page/someCharts.vue'
+// import webMap from '@/page/webMap.vue'
 import navBar from '@/components/navBar.vue'
-import deptList from '@/page/deptList'
-import materialNum from '@/page/materialNum'
 import first from '@/page/first'
-import callme from '@/page/callme'
-import materialD from '@/page/materialD'
-import needPlan from '@/page/needPlan'
-import needPlanp from '@/page/needPlanp'
-import pruchase from '@/page/pruchase'
-import No from '@/components/No'
-
-
+import housemasterInfo from '@/page/housemasterInfo'
+// import housemasterAllot from '@/page/housemasterAllot'
+import studentInfo from '@/page/studentInfo'
+import dormInfo from '@/page/dormInfo'
+import sanitation from '@/page/sanitation'
+// import bed from '@/page/bed'
+import repaired from '@/page/repaired'
+// import leavescholl from '@/page/leavescholl'
+import latereturn from '@/page/latereturn'
+// import watertransfer from '@/page/watertransfer'
+// import waterdeliver from '@/page/waterdeliver'
+import userInfo from '@/page/userInfo'
 
 Vue.use(Router)
 
@@ -37,6 +36,12 @@ export default new Router({
       component: login
     },
     {
+      path: '/zhuce',
+      name: 'zhuce',
+      component: zhuce,
+      meta:{ requireAuth:true}
+    },
+    {
       path: '/home',
       name: 'home',
       component: home,
@@ -49,96 +54,92 @@ export default new Router({
           component : first,
           meta: { requireAuth:true },
         },
-        {
-          path: '/home/webMap',
-          name: 'webMap',
-          component : webMap,
-          meta: { title: '地图' , requireAuth:true}
-        },
-        {
-          path: '/home/userList',
-          name: 'userList',
-          component : userList,
-          // meta:{ title: '人员管理' }
-        },
-        {
-          path: '/home/someCharts',
-          name: 'someCharts',
-          component : someCharts,
-          meta: { title: '物资类别' , requireAuth:true},
+        // {
+        //   path: '/home/webMap',
+        //   name: 'webMap',
+        //   component : webMap,
+        //   meta: { title: '地图' , requireAuth:true}
+        // },
+        // {
+        //   path: '/home/someCharts',
+        //   name: 'someCharts',
+        //   component : someCharts,
+        //   meta: { title: '物资类别' , requireAuth:true},
 
+        // },
+        {
+          path: '/home/housemasterInfo',
+          name: 'housemasterInfo',
+          component : housemasterInfo,
+          meta:{title: '基本信息', requireAuth:true}
+        },
+        // {
+        //   path: '/home/housemasterAllot',
+        //   name: 'housemasterAllot',
+        //   component : housemasterAllot,
+        //   meta:{title: '人员分配', requireAuth:true}
+        // },
+        {
+          path: '/home/studentInfo',
+          name: 'studentInfo',
+          component : studentInfo,
+          meta:{title: '基本信息', requireAuth:true}
         },
         {
-          path: '/home/materialInfo',
-          name: 'materialInfo',
-          component : materialInfo,
-          meta: { title: '物资编码审批' ,requireAuth:true},
-
+          path: '/home/dormInfo',
+          name: 'dormInfo',
+          component : dormInfo,
+          meta:{title: '基本信息', requireAuth:true}
         },
         {
-          path: '/home/materialD',
-          name: 'materialD',
-          component : materialD,
-          meta: { title: '打印物资数据' ,requireAuth:true},
+          path: '/home/sanitation',
+          name: 'sanitation',
+          component : sanitation,
+          meta:{title: '卫生情况', requireAuth:true}
         },
+        // {
+        //   path: '/home/bed',
+        //   name: 'bed',
+        //   component : bed,
+        //   meta:{title: '就寝信息', requireAuth:true}
+        // },
         {
-          path: '/home/needPlan',
-          name: 'needPlan',
-          component : needPlan,
-          meta: { title: '需求计划申请' ,requireAuth:true},
+          path: '/home/repaired',
+          name: 'repaired',
+          component : repaired,
+          meta:{title: '报修记录', requireAuth:true}
         },
+        // {
+        //   path: '/home/leavescholl',
+        //   name: 'leavescholl',
+        //   component : leavescholl,
+        //   meta:{title: '报修记录', requireAuth:true}
+        // },
         {
-          path: '/home/pruchase',
-          name: 'pruchase',
-          component : pruchase,
-          meta: { title: '请购' ,requireAuth:true},
+          path: '/home/latereturn',
+          name: 'latereturn',
+          component : latereturn,
+          meta:{title: '晚归记录', requireAuth:true}
         },
+        // {
+        //   path: '/home/watertransfer',
+        //   name: 'watertransfer',
+        //   component : watertransfer,
+        //   meta:{title: '搬水记录', requireAuth:true}
+        // },
+        // {
+        //   path: '/home/waterdeliver',
+        //   name: 'waterdeliver',
+        //   component : waterdeliver,
+        //   meta:{title: '搬水记录', requireAuth:true}
+        // },
         {
-          path: '/home/needPlanp',
-          name: 'needPlanp',
-          component : needPlanp,
-          meta: { title: '需求计划审批' ,requireAuth:true},
-        },
-        {
-          path: '/home/peopleTable',
-          name: 'peopleTable',
-          component : peopleTable,
-          meta:{ title: '人员管理' ,requireAuth:true }
-        },
-        {
-          path: '/home/deptList',
-          name: 'deptList',
-          component : deptList,
-          meta:{ title: '部门管理' ,requireAuth:true}
-        },
-        {
-          path: '/home/materialNum',
-          name: 'materialNum',
-          component : materialNum,
-          meta:{ title: '物资编码申请' ,requireAuth:true}
-        },
-        {
-          path: '/home/callme',
-          name: 'callme',
-          component : callme,
-          meta:{ title: '请联系我' ,requireAuth:true}
-        },
-        {
-          path: '/home/No',
-          name: 'No',
-          component : No,
-          meta:{ title: '404' }
+          path: '/home/userInfo',
+          name: 'userInfo',
+          component : userInfo,
+          meta:{title: '用户信息', requireAuth:true}
         }
-
-       
-        
       ]
-    },
-    {
-      path: '/zhuce',
-      name: 'zhuce',
-      component: zhuce,
-      meta:{ requireAuth:true}
     },
     {
       path: '/headTop',
@@ -151,9 +152,7 @@ export default new Router({
       name: 'navBar',
       component : navBar,
       meta:{ requireAuth:true}
-    },
-    
-    
+    }
   ]
 })
 

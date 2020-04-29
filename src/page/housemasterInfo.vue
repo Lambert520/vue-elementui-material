@@ -1,19 +1,19 @@
 <template>
   <div class="people">
     <div class="topButton">
-      <el-button size="mini" @click="showAddUser()" type="primary">添加人员</el-button>
+      <el-button size="mini" @click="showAddHM()" type="primary">添加管理员信息</el-button>
 
       <el-button size="mini" type="warning" @click="showChange()">修改</el-button>
 
-      <el-button size="mini" type="info" @click="mShow()">查看密码</el-button>
+      <!-- <el-button size="mini" type="info" @click="mShow()">查看密码</el-button> -->
 
       <el-button size="mini" type="danger" @click="showDelete()">删除</el-button>
     </div>
     <!-- 表格 -->
     <div class="list">
-      <!-- <div class="search">
+      <div class="search">
         <el-input v-model="search" placeholder="请输入内容"></el-input>
-      </div>-->
+      </div> 
 
       <el-table
         :data="user.slice((currentPage-1)*pagesize,currentPage*pagesize)"
@@ -22,27 +22,20 @@
         border
         @current-change="handleCurrentsChange"
       >
-        <el-table-column label="ID" prop="id"></el-table-column>
+        <!-- <el-table-column label="编号" prop="h_id"></el-table-column> -->
 
-        <el-table-column label="工号" prop="jobNum"></el-table-column>
+        <el-table-column label="工号" prop="h_no"></el-table-column>
 
-        <el-table-column label="密码" prop="passWord" v-if="flag4"></el-table-column>
+        <el-table-column label="密码" prop="h_password" v-if="flag4"></el-table-column>
 
-        <el-table-column label="姓名" prop="userName"></el-table-column>
+        <el-table-column label="姓名" prop="h_name"></el-table-column>
 
-        <el-table-column label="联系电话" prop="userTel"></el-table-column>
+        <el-table-column label="性别" prop="h_sex"></el-table-column>
 
-        <el-table-column label="性别" prop="userSex"></el-table-column>
+        <el-table-column label="联系电话" prop="h_tel"></el-table-column>
 
-        <el-table-column label="部门编号" prop="deptNum"></el-table-column>
+        <el-table-column label="宿舍楼号" prop="h_dorm_build_no"></el-table-column>
 
-        <el-table-column label="部门" prop="deptName"></el-table-column>
-
-        <el-table-column label="职位" prop="job"></el-table-column>
-
-        <template slot="header">
-          <el-input v-model="search" placeholder="输入关键字搜索" />
-        </template>
       </el-table>
 
       <!-- 分页 -->
@@ -61,41 +54,39 @@
 
     <!-- 添加人员弹框 -->
 
-    <div v-if="flag" class="addUser">
+    <div v-if="flag" class="addHM">
       <div class="title">
-        <h2>添加人员</h2>
+        <h2>添加管理员信息</h2>
         <i class="el-icon-close" @click="clossAdd()"></i>
       </div>
       <div class="add">
-        <el-form ref="form" :model="addUser" label-width="80px" :rules="rules">
+        <el-form ref="form" :model="addHM" label-width="80px" :rules="rules">
           <el-form-item label="姓名">
-            <el-input v-model="addUser.userName"></el-input>
+            <el-input v-model="addHM.h_name"></el-input>
           </el-form-item>
-          <el-form-item label="账号">
-            <el-input v-model="addUser.jobNum" placeholder="请输入数字"></el-input>
+          <el-form-item label="工号">
+            <el-input v-model="addHM.h_no" placeholder="请输入数字"></el-input>
           </el-form-item>
-          <el-form-item label="密码">
-            <el-input v-model="addUser.passWord"></el-input>
-          </el-form-item>
-          <el-form-item label="电话">
-            <el-input v-model="addUser.userTel"></el-input>
+          <el-form-item label="联系电话">
+            <el-input v-model="addHM.h_tel"></el-input>
           </el-form-item>
           <el-form-item label="性别">
-            <el-select v-model="addUser.userSex" placeholder="请选择性别">
+            <el-select v-model="addHM.h_sex" placeholder="请选择性别">
               <el-option label="男" value="男"></el-option>
               <el-option label="女" value="女"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="部门">
-            <el-select v-model="addUser.deptName" placeholder="请选择部门">
+          <el-form-item label="宿舍楼号">
+            <el-input v-model="addHM.h_dorm_build_no"></el-input>
+            <!-- <el-select v-model="addUser.deptName" placeholder="请选择部门">
               <el-option label="采购部" value="采购部"></el-option>
               <el-option label="库管部" value="库管部"></el-option>
               <el-option label="物资部" value="物资部"></el-option>
-            </el-select>
+            </el-select> -->
           </el-form-item>
           <div class="addButton">
             <el-form-item>
-              <el-button type="primary" @click="addPeople()">提交</el-button>
+              <el-button type="primary" @click="addHMI()">提交</el-button>
               <el-button @click="addRest()">重置</el-button>
             </el-form-item>
           </div>
@@ -104,39 +95,43 @@
     </div>
     <!-- 修改弹框 -->
 
-    <div v-if="flag2" class="changeUser">
+    <div v-if="flag2" class="changeHM">
       <div class="title">
-        <h2>修改人员</h2>
+        <h2>修改管理员信息</h2>
         <i class="el-icon-close" @click="clossChange()"></i>
       </div>
 
       <div class="change">
         <el-form ref="form" :model="changeList" label-width="80px">
           <el-form-item label="姓名">
-            <el-input v-model="changeList.userName"></el-input>
+            <el-input v-model="changeList.h_name"></el-input>
           </el-form-item>
-          <el-form-item label="密码">
+          <!-- <el-form-item label="密码">
             <el-input v-model="changeList.passWord"></el-input>
-          </el-form-item>
-          <el-form-item label="电话">
-            <el-input v-model="changeList.userTel"></el-input>
+          </el-form-item> -->
+          <el-form-item label="联系电话">
+            <el-input v-model="changeList.h_tel"></el-input>
           </el-form-item>
           <el-form-item label="性别">
-            <el-select v-model="changeList.userSex" placeholder="请选择性别">
+            <el-select v-model="changeList.h_sex" placeholder="请选择性别">
               <el-option label="男" value="男"></el-option>
               <el-option label="女" value="女"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="部门">
+          <el-form-item label="宿舍楼号">
+            <el-input v-model="changeList.h_dorm_build_no"></el-input>
+          </el-form-item>
+          <!-- <el-form-item label="宿舍楼号">
+            <el-input v-model="addUser.h_dorm_build_no"></el-input>
             <el-select v-model="changeList.deptName" placeholder="请选择部门">
               <el-option label="采购部" value="采购部"></el-option>
               <el-option label="库管部" value="库管部"></el-option>
               <el-option label="物资部" value="物资部"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <div class="addButton">
             <el-form-item>
-              <el-button type="primary" @click="changeUser()">提交</el-button>
+              <el-button type="primary" @click="changeHM()">提交</el-button>
               <el-button @click="changeRest()">重置</el-button>
             </el-form-item>
           </div>
@@ -177,50 +172,48 @@ export default {
       flag4:false,
       search: "",
       currentPage: 1, //初始页
-      pagesize: 10,
-      addUser: [
+      pagesize: 5,
+      addHM: [
         {
-          JobNum:'',
-          userName: "",
-          passWord: "",
-          userTel: "",
-          userSex: "",
-          deptName: ""
+          h_no:'',
+          h_name: "",
+          h_tel: "",
+          h_sex: "",
+          h_dorm_build_no: ""
         }
       ],
       changeList: [
         {
-          userName: "",
-          passWord: "",
-          userTel: "",
-          userSex: "",
-          deptName: ""
+          h_no:'',
+          h_name: "",
+          h_tel: "",
+          h_sex: "",
+          h_dorm_build_no: ""
         }
       ],
       deleteList: [
         {
-          userName: "",
-          passWord: "",
-          userTel: "",
-          userSex: "",
-          deptName: "",
-          jobNum: ""
+          h_no:'',
+          h_name: "",
+          h_tel: "",
+          h_sex: "",
+          h_dorm_build_no: ""
         }
       ],
       rules: {
-        account: [
+        h_no: [
           { required: true, message: "请输入账号", trigger: "blur" },
-          { max: 10, message: "不能大于10个字符", trigger: "blur" }
+          { max: 11, message: "不能大于11个字符", trigger: "blur" }
         ],
-        password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { max: 10, message: "不能大于10个字符", trigger: "blur" }
-        ],
-        jobnum: [
+        // password: [
+        //   { required: true, message: "请输入密码", trigger: "blur" },
+        //   { max: 10, message: "不能大于10个字符", trigger: "blur" }
+        // ],
+        h_tel: [
           { required: true, message: "请输入电话", trigger: "blur" },
           { max: 10, message: "不能大于10个字符", trigger: "blur" }
         ],
-        name: [
+        h_name: [
           { required: false, message: "请输入姓名", trigger: "blur" },
           { max: 10, message: "不能大于10个字符", trigger: "blur" }
         ],
@@ -230,7 +223,7 @@ export default {
   created() {
     let _this = this;
     this.$axios
-      .get("/user")
+      .get("/housemasterInfo")
       .then(function(res) {
         if (res.data) {
           _this.user = res.data;
@@ -245,20 +238,19 @@ export default {
   },
   inject: ["reload"],
   methods: {
-    showAddUser() {
+    showAddHM() {
       this.flag = !this.flag;
     },
-    addPeople() {
-      if(this.addUser.userName){
+    addHMI() {
+      if(this.addHM.h_name){
          let _this = this;
       this.$axios
-        .post("/user", {
-          jobNum:_this.addUser.jobNum+_this.user.length+1,
-          userName: _this.addUser.userName,
-          passWord: _this.addUser.passWord,
-          userTel: _this.addUser.userTel,
-          userSex: _this.addUser.userSex,
-          deptName: _this.addUser.deptName
+        .post("/housemasterInfo", {
+          h_no:_this.addHM.h_no,
+          h_name: _this.addHM.h_name,
+          h_tel: _this.addHM.h_tel,
+          h_sex: _this.addHM.h_sex,
+          h_dorm_build_no: _this.addHM.h_dorm_build_no
         })
         .then(res => {
           if (res.data.code === 200) {
@@ -267,7 +259,7 @@ export default {
             // this.flag2=!this.flag2
             // this.$router.go(0)
             this.reload();
-            console.log(_this.addUser.jobNum+_this.addUser.length+1)
+            console.log(_this.addHM.h_no)
           }
         })
         .catch(function(err) {
@@ -280,16 +272,16 @@ export default {
         this.$message('请添全信息')
       }
     },
-    changeUser() {
+    changeHM() {
       let _this = this;
       this.$axios
-        .put("/user", {
-          userName: _this.changeList.userName,
-          passWord: _this.changeList.passWord,
-          userTel: _this.changeList.userTel,
-          userSex: _this.changeList.userSex,
-          deptName: _this.changeList.deptName,
-          jobNum: _this.changeList.jobNum
+        .put("/housemasterInfo", {
+          h_name: _this.changeList.h_name,
+          // passWord: _this.changeList.passWord,
+          h_tel: _this.changeList.h_tel,
+          h_sex: _this.changeList.h_sex,
+          h_dorm_build_no: _this.changeList.h_dorm_build_no,
+          h_no: _this.changeList.h_no
         })
         .then(res => {
           if (res.data.code === 200) {
@@ -308,15 +300,15 @@ export default {
         });
     },
     deleteInfo() {
-      if(this.deleteList.jobNum=='0001'){
+      if(this.deleteList.h_no=='0001'){
         this.$message('没有权限')
       }else{
       let _this = this;
-      console.log(_this.deleteList.jobNum);
+      console.log(_this.deleteList.h_no);
       this.$axios
-        .delete("/user", {
+        .delete("/housemasterInfo", {
           data: {
-            jobNum: _this.deleteList.jobNum
+            h_no: _this.deleteList.h_no
           }
         })
         .then(res => {
@@ -336,7 +328,7 @@ export default {
     },
 
     showDelete() {
-      if (this.deleteList.jobNum) {
+      if (this.deleteList.h_no) {
         this.flag3 = !this.flag3;
       } else {
         this.$message("请选择一条数据");
@@ -348,7 +340,7 @@ export default {
       this.$message("操作已取消");
     },
     addRest() {
-      this.addUser = [];
+      this.addHM = [];
     },
     // 点击选中
     setCurrent(row) {
@@ -376,7 +368,7 @@ export default {
       this.$message("操作已取消");
     },
     showChange() {
-      if (this.changeList.jobNum) {
+      if (this.changeList.h_no) {
         this.flag2 = !this.flag2;
       } else {
         this.$message("请选择一条数据");
@@ -412,7 +404,7 @@ export default {
 .list {
   position: relative;
 }
-.addUser {
+.addHM {
   position: absolute;
   z-index: 1001;
   width: 400px;
@@ -426,7 +418,7 @@ export default {
   border-radius: 10px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
 }
-.addUser .title {
+.addHM .title {
   height: 50px;
   width: 100%;
   text-align: center;
@@ -435,28 +427,28 @@ export default {
   color: #409eff;
   text-shadow: 2px 2px 2px #ccc;
 }
-.addUser .title i {
+.addHM .title i {
   position: relative;
   top: -55px;
   right: -170px;
   color: black;
   font-size: 20px;
 }
-.addUser .add {
+.addHM .add {
   margin-right: 40px;
   margin-top: 30px;
 }
-.addUser .addButton {
+.addHM .addButton {
   margin-left: 10px;
   margin-top: 30px;
 }
-.addUser .addButton .el-button {
+.addHM .addButton .el-button {
   width: 110px;
 }
-.addUser .el-select {
+.addHM .el-select {
   width: 280px;
 }
-.changeUser {
+.changeHM {
   position: absolute;
   z-index: 1001;
   width: 400px;
@@ -471,7 +463,7 @@ export default {
   border-radius: 10px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
 }
-.changeUser .title {
+.changeHM .title {
   height: 50px;
   width: 100%;
   text-align: center;
@@ -480,21 +472,21 @@ export default {
   color: #409eff;
   text-shadow: 2px 2px 2px #ccc;
 }
-.changeUser .title i {
+.changeHM .title i {
   position: relative;
   top: -55px;
   right: -170px;
   color: black;
   font-size: 20px;
 }
-.changeUser .change {
+.changeHM .change {
   margin-right: 40px;
   margin-top: 30px;
 }
-.changeUser .addButton .el-button {
+.changeHM .addButton .el-button {
   width: 115px;
 }
-.changeUser .el-select {
+.changeHM .el-select {
   width: 280px;
 }
 .delete {

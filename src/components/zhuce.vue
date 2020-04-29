@@ -1,24 +1,22 @@
 <template>
  <div class="zhuce">
      <div class="zhuce-box">
-        <!-- <el-radio-group v-model="labelPosition" size="small">
-        </el-radio-group> -->
 
         <i class="el-icon-circle-close close-zhuce" @click="closezhuce"></i>
         
         <el-form :label-position="labelPosition" label-width="80px" :model="formRegister" :rules="rules">
 
-        <el-form-item label="用户名" class="zhucela" prop="username">
-        <el-input v-model="formRegister.username"></el-input>
+        <el-form-item label="用户账号" class="zhucela" prop="u_no">
+        <el-input v-model="formRegister.u_no"></el-input>
         </el-form-item>
 
-        <el-form-item label="密码" class="zhucela" prop="password">
-        <el-input placeholder="请输入密码" v-model="formRegister.password" show-password></el-input>
+        <el-form-item label="密码" class="zhucela" prop="u_password">
+        <el-input placeholder="请输入密码" v-model="formRegister.u_password" show-password></el-input>
         </el-form-item>
 
 
-        <el-form-item label="昵称" class="zhucela" prop="nickname">
-        <el-input v-model="formRegister.nickname"></el-input>
+        <el-form-item label="姓名" class="zhucela" prop="u_name">
+        <el-input v-model="formRegister.u_name"></el-input>
         </el-form-item>
         </el-form>
 
@@ -34,22 +32,22 @@
       return {
         labelPosition: 'top',
         formRegister: {
-          username: '',
-          password: '',
-          nickname: ''
+          u_no: '',
+          u_password: '',
+          u_name: ''
         },
         rules: {
-          username: [
-            {required: true, message: '请输入用户名', trigger: 'blur'},
+          u_no: [
+            {required: true, message: '请输入用户账号', trigger: 'blur'},
             {max: 10, message: '不能大于10个字符', trigger: 'blur'}
           ],
-          nickname: [
-            {required: true, message: '请输入昵称', trigger: 'blur'},
+          u_name: [
+            {required: true, message: '请输入姓名', trigger: 'blur'},
             {max: 10, message: '不能大于10个字符', trigger: 'blur'}
           ],
-          password: [
+          u_password: [
             {required: true, message: '请输入密码', trigger: 'blur'},
-            {max: 16, message: '不能大于16个字符', trigger: 'blur'}
+            {max: 11, message: '不能大于11个字符', trigger: 'blur'}
           ]
         }
      }
@@ -65,9 +63,10 @@
      zhuce () {
 
        this.$axios
-        .post('/login', {
-          username: this.formRegister.username,
-          password: this.formRegister.password
+        .post('/', {
+          u_no: this.formRegister.u_no,
+          u_name: this.formRegister.u_name,
+          u_password: this.formRegister.u_password
         })
         .then(successResponse => {
           this.responseResult = JSON.stringify(successResponse.data)

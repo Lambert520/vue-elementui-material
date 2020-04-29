@@ -12,18 +12,18 @@
         border
         @current-change="handleCurrentsChange"
       >
-        <el-table-column label="ID" prop="id"></el-table-column>
+        <el-table-column label="编号" prop="h_id"></el-table-column>
 
-        <el-table-column label="部门号" prop="deptNum"></el-table-column>
+        <el-table-column label="楼层号" prop="h_dorm_build_no"></el-table-column>
 
         <!-- <el-table-column
       label="密码"
       prop="passWord">
         </el-table-column>-->
 
-        <el-table-column label="部门名称" prop="deptName"></el-table-column>
+        <el-table-column label="工号" prop="h_no"></el-table-column>
 
-        <el-table-column label="负责人" prop="deptAdmin"></el-table-column>
+        <el-table-column label="负责人" prop="h_name"></el-table-column>
       </el-table>
 
       <!-- 分页 -->
@@ -50,8 +50,8 @@
 
       <div class="change">
         <el-form ref="form" :model="changeDept" label-width="80px">
-          <el-form-item label="姓名">
-            <el-input v-model="changeDept.deptAdmin"></el-input>
+          <el-form-item label="负责人">
+            <el-input v-model="changeDept.h_name"></el-input>
           </el-form-item>
 
           <div class="addButton">
@@ -75,22 +75,19 @@ export default {
     return {
       deptList: [],
       currentPage: 1, //初始页
-      pagesize: 10,
+      pagesize: 5,
       changeDept: [{
-          id:'',
-          deptNum:'',
-          deptName:'',
-          jobNum: '',
-          deptAdmin:''
+          h_no:'',
+          h_name: "",
+          h_dorm_build_no: ""
       }],
       flag: false,
-      
     };
   },
   created() {
     let _this = this;
     this.$axios
-      .get("/dept")
+      .get("/hm")
       .then(function(res) {
         if (res.data) {
           _this.deptList = res.data.data;
@@ -109,12 +106,10 @@ export default {
     },
     handleCurrentsChange(val) {
       this.currentRow = val;
-
       this.changeDept = val;
         console.log(this.changeDept)
       // this.changeList = []
     },
-
     handleSizeChange: function(size) {
       this.pagesize = size;
       // console.log(this.pagesize)  //每页下拉显示数据
@@ -124,7 +119,7 @@ export default {
       // console.log(this.currentPage)  //点击第几页
     },
     openChange() {
-      if (this.changeDept.deptAdmin) {
+      if (this.changeDept.h_name) {
         this.flag = !this.flag;
       } else {
         this.$message("请选择一条数据");
@@ -137,12 +132,16 @@ export default {
     putChange() {
       let _this = this;
       this.$axios
-        .put("/dept", {
-          id:_this.changeDept.id,
-          deptNum:_this.changeDept.deptNum,
-          deptName:_this.changeDept.deptName,
-          jobNum: _this.changeDept.jobNum,
-          deptAdmin: _this.changeDept.deptAdmin
+        .put("/hm", {
+          // id:_this.changeDept.id,
+          // deptNum:_this.changeDept.deptNum,
+          // deptName:_this.changeDept.deptName,
+          // jobNum: _this.changeDept.jobNum,
+          // deptAdmin: _this.changeDept.deptAdmin
+          // h_no:_this.changeDept.h_no,
+          h_dorm_build_no:_this.changeDept.h_dorm_build_no,
+          h_name:_this.changeDept.h_name,
+          h_no:_this.changeDept.h_no
         })
         .then(res => {
           if (res.data.code === 200) {

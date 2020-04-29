@@ -2,8 +2,6 @@
   <div :style="height">
 
     <div class="logo">
-      <!-- <input id="vhs" type="checkbox" /> -->
-      <!-- <label for="vhs">📼</label> -->
       <div class="scene">
         <div class="container">
           <div class="sun"></div>
@@ -25,31 +23,32 @@
 
     <div class="login">
       <div class="login-box">
-        <img src="../assets/logo.png" alt />
+        <img src="../assets/first.jpg" alt />
 
         <el-form
           ref="loginForm"
           :model="loginForm"
           :rules="rules"
-          style="position: relative;left: 0px;top: -55px;"
-        >
+          style="position: relative;left: 0px;top: -55px;">
+          
           <div class="login-field1">
             <label class="login-title" style="color:black"></label>
-            <el-form-item prop="account">
-              <el-input placeholder="请输入账号" v-model="loginForm.account" clearable></el-input>
+            <el-form-item prop="u_no">
+              <el-input placeholder="请输入账号" v-model="loginForm.u_no" clearable ></el-input>
             </el-form-item>
           </div>
 
           <div class="login-field2">
             <label class="login-title" style="color:black"></label>
-            <el-form-item prop="password">
-              <el-input placeholder="请输入密码" v-model="loginForm.password" show-password></el-input>
+            <el-form-item prop="u_password">
+              <el-input placeholder="请输入密码" v-model="loginForm.u_password" show-password></el-input>
             </el-form-item>
           </div>
 
           <el-form-item size="small" class="me-login-button">
             <el-button type="primary" class="login-button" @click="denglu">登陆</el-button>
-            <el-button type="primary" class="login-button">默认账号:0001  - 密码:123456</el-button>
+            <el-button type="primary" class="login-button" @click="zhuce">注册</el-button>
+            
           </el-form-item>
         </el-form>
       </div>
@@ -63,9 +62,9 @@ export default {
   data() {
     return {
       loginForm: {
-        jobNum: "",
-        password: "",
-        userName: ""
+        u_no: "",
+        u_password: "",
+        u_name: ""
       },
       height: {
         height: ""
@@ -96,14 +95,14 @@ export default {
       let _this = this;
       this.$axios
         .post("/login", {
-          jobNum: this.loginForm.account,
-          passWord: this.loginForm.password,
-          userName: this.loginForm.userName
+          u_no: this.loginForm.u_no,
+          u_password: this.loginForm.u_password,
+          u_name: this.loginForm.u_name
         })
         .then(res => {
           if (res.data.code === 200) {
             this.$router.push({ path: "/home/first" });
-            this.$store.commit("handleUserName", res.data.data.userName);
+            this.$store.commit("handleUserName", res.data.data.u_name);
             this.$message("登陆成功");
           }
         })
