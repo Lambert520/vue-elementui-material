@@ -22,9 +22,10 @@
         border
         @current-change="handleCurrentsChange"
       >
-        <el-table-column label="宿舍号" prop="d_no"></el-table-column>
-
+      
         <el-table-column label="学号" prop="s_no"></el-table-column>
+
+        <el-table-column label="宿舍号" prop="d_no"></el-table-column>
 
         <el-table-column label="姓名" prop="s_name"></el-table-column>
 
@@ -57,12 +58,12 @@
       </div>
       <div class="add">
         <el-form ref="form" :model="addC" label-width="80px" :rules="rules">
+          <el-form-item label="学号">
+            <el-input v-model="addC.s_no"></el-input>
+          </el-form-item>
           <el-form-item label="宿舍号">
             <el-input v-model="addC.d_no"></el-input>
-          </el-form-item>
-          <el-form-item label="学号">
-            <el-input v-model="addC.s_no" placeholder="请输入数字"></el-input>
-          </el-form-item>
+          </el-form-item>       
           <el-form-item label="姓名">
             <el-input v-model="addC.s_name"></el-input>
           </el-form-item>
@@ -91,11 +92,11 @@
 
       <div class="change">
         <el-form ref="form" :model="changeList" label-width="80px">
-          <el-form-item label="宿舍号">
-            <el-input v-model="changeList.d_no"></el-input>
-          </el-form-item>
-          <el-form-item label="学号">
+          <!-- <el-form-item label="学号">
             <el-input v-model="changeList.s_no"></el-input>
+          </el-form-item> -->
+           <el-form-item label="宿舍号">
+            <el-input v-model="changeList.d_no"></el-input>
           </el-form-item>
           <el-form-item label="姓名">
             <el-input v-model="changeList.s_name"></el-input>
@@ -152,8 +153,8 @@ export default {
       pagesize: 5,
       addC: [
         {
-          d_no:'',
-          s_no:'',
+          d_no:"",
+          s_no:"",
           s_name: "",
           unattn_c_rsn: "",
           unattn_c_t: ""
@@ -161,8 +162,8 @@ export default {
       ],
       changeList: [
         {
-          d_no:'',
-          s_no:'',
+          d_no:"",
+          s_no:"",
           s_name: "",
           unattn_c_rsn: "",
           unattn_c_t: ""
@@ -170,8 +171,8 @@ export default {
       ],
       deleteList: [
         {
-          d_no:'',
-          s_no:'',
+          d_no:"",
+          s_no:"",
           s_name: "",
           unattn_c_rsn: "",
           unattn_c_t: ""
@@ -271,11 +272,11 @@ export default {
     deleteInfo() {
 
       let _this = this;
-      console.log(_this.deleteList.d_no);
+      console.log(_this.deleteList.s_no);
       this.$axios
         .delete("/dormmbrcs", {
           data: {
-            d_no: _this.deleteList.d_no
+            s_no: _this.deleteList.s_no
           }
         })
         .then(res => {
@@ -370,7 +371,7 @@ export default {
 .list {
   position: relative;
 }
-.addD {
+.addC {
   position: absolute;
   z-index: 1001;
   width: 400px;
@@ -384,7 +385,7 @@ export default {
   border-radius: 10px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
 }
-.addD .title {
+.addC .title {
   height: 50px;
   width: 100%;
   text-align: center;
@@ -393,25 +394,25 @@ export default {
   color: #409eff;
   text-shadow: 2px 2px 2px #ccc;
 }
-.addD .title i {
+.addC .title i {
   position: relative;
   top: -55px;
   right: -170px;
   color: black;
   font-size: 20px;
 }
-.addD .add {
+.addC .add {
   margin-right: 40px;
   margin-top: 30px;
 }
-.addD .addButton {
+.addC .addButton {
   margin-left: 10px;
   margin-top: 30px;
 }
-.addD .addButton .el-button {
+.addC .addButton .el-button {
   width: 110px;
 }
-.addD .el-select {
+.addC .el-select {
   width: 280px;
 }
 .changeD {

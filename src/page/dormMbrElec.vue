@@ -22,9 +22,10 @@
         border
         @current-change="handleCurrentsChange"
       >
-        <el-table-column label="宿舍号" prop="d_no"></el-table-column>
 
         <el-table-column label="学号" prop="s_no"></el-table-column>
+
+        <el-table-column label="宿舍号" prop="d_no"></el-table-column>
 
         <el-table-column label="姓名" prop="s_name"></el-table-column>
 
@@ -63,12 +64,12 @@
       </div>
       <div class="add">
         <el-form ref="form" :model="addElec" label-width="80px" :rules="rules">
-          <el-form-item label="宿舍号">
-            <el-input v-model="addElec.d_no"></el-input>
-          </el-form-item>
           <el-form-item label="学号">
             <el-input v-model="addElec.s_no"></el-input>
           </el-form-item>
+          <el-form-item label="宿舍号">
+            <el-input v-model="addElec.d_no"></el-input>
+          </el-form-item>        
           <el-form-item label="姓名">
             <el-input v-model="addElec.s_name"></el-input>
           </el-form-item>
@@ -97,9 +98,9 @@
 
       <div class="change">
         <el-form ref="form" :model="changeList" label-width="80px">
-          <el-form-item label="学号">
+          <!-- <el-form-item label="学号">
             <el-input v-model="changeList.s_no"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="宿舍号">
             <el-input v-model="changeList.d_no"></el-input>
           </el-form-item>  

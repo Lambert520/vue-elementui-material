@@ -91,9 +91,9 @@
 
       <div class="change">
         <el-form ref="form" :model="changeList" label-width="80px">
-          <el-form-item label="学号">
+          <!-- <el-form-item label="学号">
             <el-input v-model="changeList.s_no"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="宿舍号">
             <el-input v-model="changeList.d_no"></el-input>
           </el-form-item>
