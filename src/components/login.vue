@@ -72,13 +72,13 @@ export default {
 
       responseResult: [],
       rules: {
-        account: [
+        u_no: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { max: 10, message: "不能大于10个字符", trigger: "blur" }
+          { max: 11, message: "不能大于11个字符", trigger: "blur" }
         ],
-        password: [
+        u_password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { max: 10, message: "不能大于10个字符", trigger: "blur" }
+          { max: 11, message: "不能大于11个字符", trigger: "blur" }
         ]
       }
     };

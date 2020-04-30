@@ -12,7 +12,7 @@
     <!-- 表格 -->
     <div class="list">
       <div class="search">
-        <el-input v-model="search" placeholder="请输入内容" style="width:105px"></el-input>
+        <el-input v-model="addStudent.s_no" placeholder="请输入学号" style="width:105px"></el-input>
         <el-button size="mini" type="number" @click="selctStudent()">查询</el-button>
       </div> 
 
@@ -180,7 +180,7 @@ export default {
       flag2: false,
       flag3: false,
       flag4:false,
-      search: "",
+      // search: "",
       currentPage: 1, //初始页
       pagesize: 5,
       addStudent: [
@@ -243,7 +243,27 @@ export default {
   inject: ["reload"],
   methods: {
     selctStudent(){
-      
+      let _this = this;
+      this.$axios
+        .request("/student", {
+          data: {
+            s_no: _this.addStudentI.s_no
+          }
+        })
+        .then(res => {
+          // if (res.data.code === 200) {
+          //   this.$message("删除成功");
+          //   this.flag3 = !this.flag3;
+          //   this.reload();
+          // }
+          // this.reload();
+        })
+        .catch(err => {
+          if (err.response) {
+            console.log(err.response);
+            this.$message("后台连接失败");
+          }
+        });
     },
     showAddStudent() {
       this.flag = !this.flag;

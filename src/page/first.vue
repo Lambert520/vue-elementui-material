@@ -86,7 +86,9 @@
 
     <div class="welcome">
       <el-card class="elcard20">
-        <div class="text2"></div>
+        <div >
+          <span>欢迎使用学生宿舍管理系统</span>
+        </div>
       </el-card>
     </div>
   </div>
@@ -371,7 +373,7 @@ export default {
   margin-top: 20px;
 }
 .elcard20 {
-  height: 150px;
+  height: 250px;
   /* line-height: 150px; */
   text-align: center;
   /* padding-bottom: 50px; */
@@ -381,12 +383,12 @@ export default {
   align-items: center;
 }
 .elcard20 span {
-  font-size: 100px;
-  margin-bottom: 50px;
+  font-size: 80px;
+  /* margin-bottom: 50px; */
 }
 .welcome {
-  margin-top: 100px;
-  height: 150px;
+  margin-top: 80px;
+  height: 100px;
 }
 .span1 {
   margin-right: 50px;

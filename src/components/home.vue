@@ -47,6 +47,10 @@
                 <el-menu-item index="/home/dormInfo">基本信息</el-menu-item>
               </el-menu-item-group>
 
+              <!-- <el-menu-item-group>
+                <el-menu-item index="/home/dormMember">舍员信息</el-menu-item>
+              </el-menu-item-group> -->
+
               <el-menu-item-group>
                 <el-menu-item index="/home/sanitation">卫生情况</el-menu-item>
               </el-menu-item-group>
@@ -58,9 +62,9 @@
               <el-menu-item-group>
                 <el-menu-item index="/home/repaired">报修记录</el-menu-item>
               </el-menu-item-group>
-              <el-menu-item-group>
+              <!-- <el-menu-item-group>
                 <el-menu-item index="/home/latereturn">晚归记录</el-menu-item>
-              </el-menu-item-group>
+              </el-menu-item-group> -->
               <!-- <el-menu-item-group>
                 <el-menu-item index="/home/watertransfer">搬水记录</el-menu-item>
               </el-menu-item-group>
@@ -71,9 +75,41 @@
                 <el-menu-item index="/home/leavescholl">离校时间</el-menu-item>
               </el-menu-item-group> -->
             </el-submenu>
+
             <el-submenu index="5">
               <template slot="title">
-                <i class="el-icon-refresh"></i>
+                <i class="el-icon-truck"></i>
+                <span>宿舍成员管理</span>
+              </template>
+
+              <el-menu-item-group>
+                <el-menu-item index="/home/dormMbr">基本信息</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="/home/dormMbrCs">逃课记录</el-menu-item>
+              </el-menu-item-group>
+              <el-menu-item-group>
+                <el-menu-item index="/home/dormMbrElec">违规用电记录</el-menu-item>
+              </el-menu-item-group>
+               <el-menu-item-group>
+                <el-menu-item index="/home/dormMbrNR">夜不归寝记录</el-menu-item>
+              </el-menu-item-group>
+              
+               <!-- <el-menu-item-group>
+                <el-menu-item index="/home/dormMember">基本信息</el-menu-item>
+              </el-menu-item-group>
+               <el-menu-item-group>
+                <el-menu-item index="/home/dormMember">基本信息</el-menu-item>
+              </el-menu-item-group>
+               <el-menu-item-group>
+                <el-menu-item index="/home/dormMember">基本信息</el-menu-item>
+              </el-menu-item-group> -->
+
+            </el-submenu>
+
+            <el-submenu index="6">
+              <template slot="title">
+                <i class="el-icon-shopping-bag-1"></i>
                 <span>用户管理</span>
               </template>
               <el-menu-item-group>

@@ -16,10 +16,15 @@ import sanitation from '@/page/sanitation'
 // import bed from '@/page/bed'
 import repaired from '@/page/repaired'
 // import leavescholl from '@/page/leavescholl'
-import latereturn from '@/page/latereturn'
+// import latereturn from '@/page/latereturn'
 // import watertransfer from '@/page/watertransfer'
 // import waterdeliver from '@/page/waterdeliver'
 import userInfo from '@/page/userInfo'
+import dormMbr from '@/page/dormMbr'
+import dormMbrCs from '@/page/dormMbrCs'
+import dormMbrNR from '@/page/dormMbrNR'
+import dormMbrElec from '@/page/dormMbrElec'
+
 
 Vue.use(Router)
 
@@ -32,6 +37,11 @@ export default new Router({
     // },
     {
       path: '/',
+      name: 'login',
+      component: login
+    },
+    {
+      path: '/login',
       name: 'login',
       component: login
     },
@@ -92,6 +102,30 @@ export default new Router({
           meta:{title: '基本信息', requireAuth:true}
         },
         {
+          path: '/home/dormMbr',
+          name: 'dormMbr',
+          component : dormMbr,
+          meta:{title: '基本信息', requireAuth:true}
+        },
+        {
+          path: '/home/dormMbrCs',
+          name: 'dormMbrCs',
+          component : dormMbrCs,
+          meta:{title: '逃课记录', requireAuth:true}
+        },
+        {
+          path: '/home/dormMbrNR',
+          name: 'dormMbrNR',
+          component : dormMbrNR,
+          meta:{title: '夜不归寝记录', requireAuth:true}
+        },
+        {
+          path: '/home/dormMbrElec',
+          name: 'dormMbrElec',
+          component : dormMbrElec,
+          meta:{title: '违规用电记录', requireAuth:true}
+        },
+        {
           path: '/home/sanitation',
           name: 'sanitation',
           component : sanitation,
@@ -115,12 +149,12 @@ export default new Router({
         //   component : leavescholl,
         //   meta:{title: '报修记录', requireAuth:true}
         // },
-        {
-          path: '/home/latereturn',
-          name: 'latereturn',
-          component : latereturn,
-          meta:{title: '晚归记录', requireAuth:true}
-        },
+        // {
+        //   path: '/home/latereturn',
+        //   name: 'latereturn',
+        //   component : latereturn,
+        //   meta:{title: '晚归记录', requireAuth:true}
+        // },
         // {
         //   path: '/home/watertransfer',
         //   name: 'watertransfer',

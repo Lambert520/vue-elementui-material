@@ -67,7 +67,7 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-user" split-button="true">
-                <span @click="tozhuce">登出</span>
+                <span @click="tologin">登出</span>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -98,7 +98,7 @@ export default {
   created() {},
   methods: {
     tologin() {
-      this.$router.push({ path: "/" });
+      this.$router.push({ path: "/login" });
     },
     tozhuce() {
       let flag = false;

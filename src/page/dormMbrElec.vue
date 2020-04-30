@@ -1,7 +1,7 @@
 <template>
   <div class="people">
     <div class="topButton">
-      <el-button size="mini" @click="showAddLR()" type="primary">添加晚归情况</el-button>
+      <el-button size="mini" @click="showAddElec()" type="primary">添加违规用电记录</el-button>
 
       <el-button size="mini" type="warning" @click="showChange()">修改</el-button>
 
@@ -22,15 +22,21 @@
         border
         @current-change="handleCurrentsChange"
       >
-        <el-table-column label="学号" prop="s_no"></el-table-column>
-
         <el-table-column label="宿舍号" prop="d_no"></el-table-column>
+
+        <el-table-column label="学号" prop="s_no"></el-table-column>
 
         <el-table-column label="姓名" prop="s_name"></el-table-column>
 
-        <el-table-column label="晚归时间" prop="late_return_time"></el-table-column>
+        <el-table-column label="违规用电原因" prop="illegal_elec_rsn"></el-table-column>
 
-        <el-table-column label="晚归缘由" prop="late_return_reason"></el-table-column>
+        <el-table-column label="违规用电时间" prop="illegal_elec_t"></el-table-column>
+
+        <!-- <el-table-column label="楼层数" prop="floor"></el-table-column>
+
+        <el-table-column label="楼层数" prop="floor"></el-table-column>
+
+        <el-table-column label="楼层数" prop="floor"></el-table-column>  -->
 
       </el-table>
 
@@ -48,33 +54,33 @@
       </div>
     </div>
 
-    <!-- 添加卫生情况弹框 -->
+    <!-- 添加宿舍弹框 -->
 
-    <div v-if="flag" class="addLR">
+    <div v-if="flag" class="addElec">
       <div class="title">
-        <h2>添加晚归情况</h2>
+        <h2>添加违规用电信息</h2>
         <i class="el-icon-close" @click="clossAdd()"></i>
       </div>
       <div class="add">
-        <el-form ref="form" :model="addLR" label-width="80px" :rules="rules">
-          <el-form-item label="学号">
-            <el-input v-model="addLR.s_no"></el-input>
-          </el-form-item>
+        <el-form ref="form" :model="addElec" label-width="80px" :rules="rules">
           <el-form-item label="宿舍号">
-            <el-input v-model="addLR.d_no"></el-input>
+            <el-input v-model="addElec.d_no"></el-input>
+          </el-form-item>
+          <el-form-item label="学号">
+            <el-input v-model="addElec.s_no"></el-input>
           </el-form-item>
           <el-form-item label="姓名">
-            <el-input v-model="addLR.s_name"></el-input>
+            <el-input v-model="addElec.s_name"></el-input>
           </el-form-item>
-          <el-form-item label="晚归时间">
-            <el-input v-model="addLR.late_return_time"></el-input>
+           <el-form-item label="违规用电原因">
+            <el-input v-model="addElec.illegal_elec_rsn"></el-input>
           </el-form-item>
-          <el-form-item label="晚归原因">
-            <el-input v-model="addLR.late_return_reason"></el-input>
+          <el-form-item label="违规用电时间">
+            <el-input v-model="addElec.illegal_elec_t"></el-input>
           </el-form-item>
           <div class="addButton">
             <el-form-item>
-              <el-button type="primary" @click="addLRI()">提交</el-button>
+              <el-button type="primary" @click="addElecI()">提交</el-button>
               <el-button @click="addRest()">重置</el-button>
             </el-form-item>
           </div>
@@ -83,26 +89,32 @@
     </div>
     <!-- 修改弹框 -->
 
-    <div v-if="flag2" class="changeLR">
+    <div v-if="flag2" class="changeElec">
       <div class="title">
-        <h2>修改晚归情况</h2>
+        <h2>修改违规用电信息</h2>
         <i class="el-icon-close" @click="clossChange()"></i>
       </div>
 
       <div class="change">
         <el-form ref="form" :model="changeList" label-width="80px">
+          <el-form-item label="学号">
+            <el-input v-model="changeList.s_no"></el-input>
+          </el-form-item>
           <el-form-item label="宿舍号">
             <el-input v-model="changeList.d_no"></el-input>
-          </el-form-item>
-          <el-form-item label="晚归时间">
-            <el-input v-model="changeList.late_return_time"></el-input>
-          </el-form-item>
-          <el-form-item label="晚归原因">
-            <el-input v-model="changeList.late_return_reason"></el-input>
+          </el-form-item>  
+          <el-form-item label="姓名">
+            <el-input v-model="changeList.s_name"></el-input>
+          </el-form-item>       
+          <el-form-item label="违规用电原因">
+            <el-input v-model="changeList.illegal_elec_rsn"></el-input>
+          </el-form-item>  
+          <el-form-item label="违规用电时间">
+            <el-input v-model="changeList.illegal_elec_t"></el-input>
           </el-form-item>
           <div class="addButton">
             <el-form-item>
-              <el-button type="primary" @click="changeLRI()">提交</el-button>
+              <el-button type="primary" @click="changeElecI()">提交</el-button>
               <el-button @click="changeRest()">重置</el-button>
             </el-form-item>
           </div>
@@ -144,55 +156,50 @@ export default {
       search: "",
       currentPage: 1, //初始页
       pagesize: 5,
-      addLR: [
+      addElec: [
         {
-          s_no: "",
-          d_no: "",
+          d_no:'',
+          s_no:'',
           s_name: "",
-          late_return_time: "",
-          late_return_reason: ""          
+          illegal_elec_rsn: "",
+          illegal_elec_t: ""
         }
       ],
       changeList: [
         {
           d_no:'',
-          late_return_time: "",
-          late_return_reason: ""
+          s_no:'',
+          s_name: "",
+          illegal_elec_rsn: "",
+          illegal_elec_t: ""
         }
       ],
       deleteList: [
         {
-          s_no: "",
-          d_no: "",
+          d_no:'',
+          s_no:'',
           s_name: "",
-          late_return_time: "",
-          late_return_reason: "" 
+          illegal_elec_rsn: "",
+          illegal_elec_t: ""
         }
       ],
       rules: {
         d_no: [
-          { required: true, message: "请输入账号", trigger: "blur" },
+          { required: true, message: "请输入宿舍号", trigger: "blur" },
           { max: 3, message: "不能大于3个字符", trigger: "blur" }
+        ],
+       
+        s_no: [
+          { required: true, message: "请输入学号", trigger: "blur" },
+          { max: 11, message: "不能大于11个字符", trigger: "blur" }
         ]
-        // password: [
-        //   { required: true, message: "请输入密码", trigger: "blur" },
-        //   { max: 10, message: "不能大于10个字符", trigger: "blur" }
-        // ],
-        // jobnum: [
-        //   { required: true, message: "请输入电话", trigger: "blur" },
-        //   { max: 10, message: "不能大于10个字符", trigger: "blur" }
-        // ],
-        // name: [
-        //   { required: false, message: "请输入姓名", trigger: "blur" },
-        //   { max: 10, message: "不能大于10个字符", trigger: "blur" }
-        // ],
       }
     };
   },
   created() {
     let _this = this;
     this.$axios
-      .get("/latereturn")
+      .get("/dormmbrelec")
       .then(function(res) {
         if (res.data) {
           _this.user = res.data;
@@ -207,19 +214,19 @@ export default {
   },
   inject: ["reload"],
   methods: {
-    showAddLR() {
+    showAddElec() {
       this.flag = !this.flag;
     },
-    addLRI() {
-      if(this.addLR.d_no){
+    addElecI() {
+      if(this.addElec.s_no){
          let _this = this;
       this.$axios
-        .post("/latereturn", {
-          d_no:_this.addLR.d_no,
-          s_no:_this.addLR.s_no,
-          s_name:_this.addLR.s_name,
-          late_return_time: _this.addLR.late_return_time,
-          late_return_reason: _this.addLR.late_return_reason
+        .post("/dormmbrelec", {
+          d_no:_this.addElec.d_no,
+          s_no: _this.addElec.s_no,
+          s_name: _this.addElec.s_name,
+          illegal_elec_rsn: _this.addElec.illegal_elec_rsn,
+          illegal_elec_t: _this.addElec.illegal_elec_t
         })
         .then(res => {
           if (res.data.code === 200) {
@@ -228,7 +235,7 @@ export default {
             // this.flag2=!this.flag2
             // this.$router.go(0)
             this.reload();
-            console.log(_this.addLR.d_no)
+            console.log(_this.addElec.d_no)
           }
         })
         .catch(function(err) {
@@ -241,14 +248,15 @@ export default {
         this.$message('请添全信息')
       }
     },
-    changeLRI() {
+    changeElecI() {
       let _this = this;
       this.$axios
-        .put("/latereturn", {
-          s_no: _this.changeList.s_no,
+        .put("/dormmbrelec", {
           d_no: _this.changeList.d_no,
-          late_return_time: _this.changeList.late_return_time,
-          late_return_reason: _this.changeList.late_return_reason
+          s_name: _this.changeList.s_name,
+          s_no: _this.changeList.s_no,
+          illegal_elec_rsn: _this.changeList.illegal_elec_rsn,
+          illegal_elec_t: _this.changeList.illegal_elec_t
         })
         .then(res => {
           if (res.data.code === 200) {
@@ -267,10 +275,11 @@ export default {
         });
     },
     deleteInfo() {
+
       let _this = this;
       console.log(_this.deleteList.s_no);
       this.$axios
-        .delete("/latereturn", {
+        .delete("/dormmbrelec", {
           data: {
             s_no: _this.deleteList.s_no
           }
@@ -303,7 +312,7 @@ export default {
       this.$message("操作已取消");
     },
     addRest() {
-      this.addLR = [];
+      this.addElec = [];
     },
     // 点击选中
     setCurrent(row) {
@@ -331,7 +340,7 @@ export default {
       this.$message("操作已取消");
     },
     showChange() {
-      if (this.changeList.d_no) {
+      if (this.changeList.s_no) {
         this.flag2 = !this.flag2;
       } else {
         this.$message("请选择一条数据");
@@ -367,7 +376,7 @@ export default {
 .list {
   position: relative;
 }
-.addLR {
+.addElec {
   position: absolute;
   z-index: 1001;
   width: 400px;
@@ -381,7 +390,7 @@ export default {
   border-radius: 10px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
 }
-.addLR .title {
+.addElec .title {
   height: 50px;
   width: 100%;
   text-align: center;
@@ -390,32 +399,32 @@ export default {
   color: #409eff;
   text-shadow: 2px 2px 2px #ccc;
 }
-.addLR .title i {
+.addElec .title i {
   position: relative;
   top: -55px;
   right: -170px;
   color: black;
   font-size: 20px;
 }
-.addLR .add {
+.addElec .add {
   margin-right: 40px;
   margin-top: 30px;
 }
-.addLR .addButton {
+.addElec .addButton {
   margin-left: 10px;
   margin-top: 30px;
 }
-.addLR .addButton .el-button {
+.addElec .addButton .el-button {
   width: 110px;
 }
-.addLR .el-select {
+.addElec .el-select {
   width: 280px;
 }
-.changeLR {
+.changeElec {
   position: absolute;
   z-index: 1001;
   width: 400px;
-  height: 500px;
+  height: 550px;
   /* border:1px solid #dcdfe6; */
   left: 0;
   top: -50px;
@@ -426,7 +435,7 @@ export default {
   border-radius: 10px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
 }
-.changeLR .title {
+.changeElec .title {
   height: 50px;
   width: 100%;
   text-align: center;
@@ -435,21 +444,21 @@ export default {
   color: #409eff;
   text-shadow: 2px 2px 2px #ccc;
 }
-.changeLR .title i {
+.changeElec .title i {
   position: relative;
   top: -55px;
   right: -170px;
   color: black;
   font-size: 20px;
 }
-.changeLR .change {
+.changeElec .change {
   margin-right: 40px;
   margin-top: 30px;
 }
-.changeLR .addButton .el-button {
+.changeElec .addButton .el-button {
   width: 115px;
 }
-.changeLR .el-select {
+.changeElec.el-select {
   width: 280px;
 }
 .delete {

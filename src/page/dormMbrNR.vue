@@ -1,7 +1,7 @@
 <template>
   <div class="people">
     <div class="topButton">
-      <el-button size="mini" @click="showAddD()" type="primary">添加宿舍</el-button>
+      <el-button size="mini" @click="showAddLR()" type="primary">添加夜不归寝情况</el-button>
 
       <el-button size="mini" type="warning" @click="showChange()">修改</el-button>
 
@@ -22,15 +22,15 @@
         border
         @current-change="handleCurrentsChange"
       >
+        <el-table-column label="学号" prop="s_no"></el-table-column>
+
         <el-table-column label="宿舍号" prop="d_no"></el-table-column>
 
-        <el-table-column label="宿舍楼号" prop="dorm_build_no"></el-table-column>
+        <el-table-column label="姓名" prop="s_name"></el-table-column>
 
-        <el-table-column label="楼层号" prop="floor"></el-table-column>
+        <el-table-column label="夜不归寝时间" prop="not_return_time"></el-table-column>
 
-        <!-- <el-table-column label="是否为舍长" prop="is_dorm_header"></el-table-column>
-
-        <el-table-column label="楼层数" prop="floor"></el-table-column> -->
+        <el-table-column label="夜不归寝缘由" prop="not_return_reason"></el-table-column>
 
       </el-table>
 
@@ -48,36 +48,33 @@
       </div>
     </div>
 
-    <!-- 添加宿舍弹框 -->
+    <!-- 添加卫生情况弹框 -->
 
-    <div v-if="flag" class="addD">
+    <div v-if="flag" class="addLR">
       <div class="title">
-        <h2>添加宿舍信息</h2>
+        <h2>添加夜不归寝情况</h2>
         <i class="el-icon-close" @click="clossAdd()"></i>
       </div>
       <div class="add">
-        <el-form ref="form" :model="addDormitory" label-width="80px" :rules="rules">
+        <el-form ref="form" :model="addLR" label-width="80px" :rules="rules">
+          <el-form-item label="学号">
+            <el-input v-model="addLR.s_no"></el-input>
+          </el-form-item>
           <el-form-item label="宿舍号">
-            <el-input v-model="addDormitory.d_no"></el-input>
+            <el-input v-model="addLR.d_no"></el-input>
           </el-form-item>
-          <el-form-item label="宿舍楼号">
-            <el-input v-model="addDormitory.dorm_build_no"></el-input>
+          <el-form-item label="姓名">
+            <el-input v-model="addLR.s_name"></el-input>
           </el-form-item>
-          <el-form-item label="楼层号">
-            <el-input v-model="addDormitory.floor"></el-input>
+          <el-form-item label="夜不归寝时间">
+            <el-input v-model="addLR.not_return_time"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="舍长">
-            <el-select v-model="addDormitory.is_dorm_header" placeholder="请选择">
-              <el-option label="是" value="是"></el-option>
-              <el-option label="否" value="否"></el-option>
-            </el-select>
+          <el-form-item label="夜不归寝原因">
+            <el-input v-model="addLR.not_return_reason"></el-input>
           </el-form-item>
-          <el-form-item label="楼层号">
-            <el-input v-model="addDormitory.floor"></el-input>
-          </el-form-item> -->
           <div class="addButton">
             <el-form-item>
-              <el-button type="primary" @click="addDormitoryI()">提交</el-button>
+              <el-button type="primary" @click="addLRI()">提交</el-button>
               <el-button @click="addRest()">重置</el-button>
             </el-form-item>
           </div>
@@ -86,38 +83,32 @@
     </div>
     <!-- 修改弹框 -->
 
-    <div v-if="flag2" class="changeD">
+    <div v-if="flag2" class="changeLR">
       <div class="title">
-        <h2>修改宿舍信息</h2>
+        <h2>修改夜不归寝情况</h2>
         <i class="el-icon-close" @click="clossChange()"></i>
       </div>
 
       <div class="change">
         <el-form ref="form" :model="changeList" label-width="80px">
+          <el-form-item label="学号">
+            <el-input v-model="changeList.s_no"></el-input>
+          </el-form-item>
           <el-form-item label="宿舍号">
             <el-input v-model="changeList.d_no"></el-input>
           </el-form-item>
-          <el-form-item label="宿舍楼号">
-            <el-input v-model="changeList.dorm_build_no"></el-input>
+          <el-form-item label="姓名">
+            <el-input v-model="changeList.s_name"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="密码">
-            <el-input v-model="changeList.passWord"></el-input>
-          </el-form-item> -->
-          <el-form-item label="楼层号">
-            <el-input v-model="changeList.floor"></el-input>
+          <el-form-item label="夜不归寝时间">
+            <el-input v-model="changeList.not_return_time"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="舍长">
-            <el-select v-model="changeList.is_dorm_header" placeholder="请选择">
-              <el-option label="是" value="是"></el-option>
-              <el-option label="否" value="否"></el-option>
-            </el-select>
+          <el-form-item label="夜不归寝原因">
+            <el-input v-model="changeList.not_return_reason"></el-input>
           </el-form-item>
-          <el-form-item label="楼层号">
-            <el-input v-model="changeList.floor"></el-input>
-          </el-form-item> -->
           <div class="addButton">
             <el-form-item>
-              <el-button type="primary" @click="changeDormitory()">提交</el-button>
+              <el-button type="primary" @click="changeLRI()">提交</el-button>
               <el-button @click="changeRest()">重置</el-button>
             </el-form-item>
           </div>
@@ -159,44 +150,57 @@ export default {
       search: "",
       currentPage: 1, //初始页
       pagesize: 5,
-      addDormitory: [
+      addLR: [
         {
-          d_no:'',
-          dorm_build_no:'',
-          floor: ""
+          s_no: "",
+          d_no: "",
+          s_name: "",
+          not_return_time: "",
+          not_return_reason: ""          
         }
       ],
       changeList: [
         {
-          d_no:'',
-          dorm_build_no:'',
-          floor: ""
+          s_no: "",
+          d_no: "",
+          s_name: "",
+          not_return_time: "",
+          not_return_reason: ""
         }
       ],
       deleteList: [
         {
-          d_no:'',
-          dorm_build_no:'',
-          floor: ""
+          s_no: "",
+          d_no: "",
+          s_name: "",
+          not_return_time: "",
+          not_return_reason: ""
         }
       ],
       rules: {
         d_no: [
-          { required: true, message: "请输入宿舍号", trigger: "blur" },
+          { required: true, message: "请输入账号", trigger: "blur" },
           { max: 3, message: "不能大于3个字符", trigger: "blur" }
-        ],
-       
-        // s_no: [
-        //   { required: true, message: "请输入学号", trigger: "blur" },
-        //   { max: 11, message: "不能大于11个字符", trigger: "blur" }
-        // ]
+        ]
+        // password: [
+        //   { required: true, message: "请输入密码", trigger: "blur" },
+        //   { max: 10, message: "不能大于10个字符", trigger: "blur" }
+        // ],
+        // jobnum: [
+        //   { required: true, message: "请输入电话", trigger: "blur" },
+        //   { max: 10, message: "不能大于10个字符", trigger: "blur" }
+        // ],
+        // name: [
+        //   { required: false, message: "请输入姓名", trigger: "blur" },
+        //   { max: 10, message: "不能大于10个字符", trigger: "blur" }
+        // ],
       }
     };
   },
   created() {
     let _this = this;
     this.$axios
-      .get("/dormitory")
+      .get("/latereturn")
       .then(function(res) {
         if (res.data) {
           _this.user = res.data;
@@ -211,17 +215,19 @@ export default {
   },
   inject: ["reload"],
   methods: {
-    showAddD() {
+    showAddLR() {
       this.flag = !this.flag;
     },
-    addDormitoryI() {
-      if(this.addDormitory.d_no){
+    addLRI() {
+      if(this.addLR.d_no){
          let _this = this;
       this.$axios
-        .post("/dormitory", {
-          d_no:_this.addDormitory.d_no,
-          dorm_build_no: _this.addDormitory.dorm_build_no,
-          floor: _this.addDormitory.floor
+        .post("/latereturn", {
+          d_no:_this.addLR.d_no,
+          s_no:_this.addLR.s_no,
+          s_name:_this.addLR.s_name,
+          not_return_time: _this.addLR.not_return_time,
+          not_return_reason: _this.addLR.not_return_reason
         })
         .then(res => {
           if (res.data.code === 200) {
@@ -230,7 +236,7 @@ export default {
             // this.flag2=!this.flag2
             // this.$router.go(0)
             this.reload();
-            console.log(_this.addDormitory.d_no)
+            console.log(_this.addLR.d_no)
           }
         })
         .catch(function(err) {
@@ -243,13 +249,15 @@ export default {
         this.$message('请添全信息')
       }
     },
-    changeDormitory() {
+    changeLRI() {
       let _this = this;
       this.$axios
-        .put("/dormitory", {
+        .put("/latereturn", {
+          s_no: _this.changeList.s_no,
           d_no: _this.changeList.d_no,
-          dorm_build_no: _this.changeList.dorm_build_no,
-          floor: _this.changeList.floor
+          s_name: _this.changeList.s_name,
+          not_return_time: _this.changeList.not_return_time,
+          not_return_reason: _this.changeList.not_return_reason
         })
         .then(res => {
           if (res.data.code === 200) {
@@ -268,13 +276,12 @@ export default {
         });
     },
     deleteInfo() {
-
       let _this = this;
-      console.log(_this.deleteList.d_no);
+      console.log(_this.deleteList.s_no);
       this.$axios
-        .delete("/dormitory", {
+        .delete("/latereturn", {
           data: {
-            d_no: _this.deleteList.d_no
+            s_no: _this.deleteList.s_no
           }
         })
         .then(res => {
@@ -293,7 +300,7 @@ export default {
     },
 
     showDelete() {
-      if (this.deleteList.d_no) {
+      if (this.deleteList.s_no) {
         this.flag3 = !this.flag3;
       } else {
         this.$message("请选择一条数据");
@@ -305,7 +312,7 @@ export default {
       this.$message("操作已取消");
     },
     addRest() {
-      this.addDormitory = [];
+      this.addLR = [];
     },
     // 点击选中
     setCurrent(row) {
@@ -369,7 +376,7 @@ export default {
 .list {
   position: relative;
 }
-.addD {
+.addLR {
   position: absolute;
   z-index: 1001;
   width: 400px;
@@ -383,7 +390,7 @@ export default {
   border-radius: 10px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
 }
-.addD .title {
+.addLR .title {
   height: 50px;
   width: 100%;
   text-align: center;
@@ -392,32 +399,32 @@ export default {
   color: #409eff;
   text-shadow: 2px 2px 2px #ccc;
 }
-.addD .title i {
+.addLR .title i {
   position: relative;
   top: -55px;
   right: -170px;
   color: black;
   font-size: 20px;
 }
-.addD .add {
+.addLR .add {
   margin-right: 40px;
   margin-top: 30px;
 }
-.addD .addButton {
+.addLR .addButton {
   margin-left: 10px;
   margin-top: 30px;
 }
-.addD .addButton .el-button {
+.addLR .addButton .el-button {
   width: 110px;
 }
-.addD .el-select {
+.addLR .el-select {
   width: 280px;
 }
-.changeD {
+.changeLR {
   position: absolute;
   z-index: 1001;
   width: 400px;
-  height: 500px;
+  height: 550px;
   /* border:1px solid #dcdfe6; */
   left: 0;
   top: -50px;
@@ -428,7 +435,7 @@ export default {
   border-radius: 10px;
   box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
 }
-.changeD .title {
+.changeLR .title {
   height: 50px;
   width: 100%;
   text-align: center;
@@ -437,21 +444,21 @@ export default {
   color: #409eff;
   text-shadow: 2px 2px 2px #ccc;
 }
-.changeD .title i {
+.changeLR .title i {
   position: relative;
   top: -55px;
   right: -170px;
   color: black;
   font-size: 20px;
 }
-.changeD .change {
+.changeLR .change {
   margin-right: 40px;
   margin-top: 30px;
 }
-.changeD .addButton .el-button {
+.changeLR .addButton .el-button {
   width: 115px;
 }
-.changeD .el-select {
+.changeLR .el-select {
   width: 280px;
 }
 .delete {
