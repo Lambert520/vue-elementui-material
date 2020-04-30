@@ -28,6 +28,11 @@
 
         <el-table-column label="楼层号" prop="floor"></el-table-column>
 
+        <el-table-column label="检查情况" >
+            <button @click="selectSanitation()">卫生</button>
+            <button @click="selectRepaired()">报修</button>
+        </el-table-column>
+
         <!-- <el-table-column label="是否为舍长" prop="is_dorm_header"></el-table-column>
 
         <el-table-column label="楼层数" prop="floor"></el-table-column> -->
@@ -211,6 +216,12 @@ export default {
   },
   inject: ["reload"],
   methods: {
+    selectSanitation(){
+      this.$router.push({ path: "/home/sanitation" });
+    },
+    selectRepaired(){
+      this.$router.push({ path: "/home/repaired" });
+    },
     showAddD() {
       this.flag = !this.flag;
     },

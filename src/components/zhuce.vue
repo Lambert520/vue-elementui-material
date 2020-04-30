@@ -21,6 +21,10 @@
           <el-form-item label="再次输入密码" class="zhucela" prop="u_passwordR">
             <el-input placeholder="请再次输入密码" v-model="formRegister.u_passwordR" show-password></el-input>
           </el-form-item>
+
+           <el-form-item label="输入用户类型" class="zhucela" prop="u_type">
+            <el-input placeholder="输入用户类型" v-model="formRegister.u_type"></el-input>
+          </el-form-item>
         </el-form>
 
         <el-button type="primary" class="zhuce-button" @click="zhuce">注册</el-button>
@@ -38,7 +42,8 @@
           u_no: '',
           u_password: '',
           u_name: '',
-          u_passwordR:''
+          u_passwordR:'',
+          u_type:""
         },
         rules: {
           u_no: [
@@ -56,6 +61,10 @@
           u_passwordR: [
             {required: true, message: '再次输入密码', trigger: 'blur'},
             {max: 11, message: '不能大于11个字符', trigger: 'blur'}
+          ],
+           u_type: [
+            {required: true, message: '输入用户类型', trigger: 'blur'},
+            {max: 10, message: '不能大于10个字符', trigger: 'blur'}
           ]
         }
      }
@@ -78,13 +87,16 @@
        else if(this.formRegister.u_password==""){
           this.$message("请输入密码");
         }else if(this.formRegister.u_passwordR==""){
-            this.$message("请再次输入密码")
-        }else if(this.formRegister.u_password==this.formRegister.u_passwordR){
+          this.$message("请再次输入密码")
+        }else if(this.formRegister.u_type==""){
+          this.$message("请输入用户类型")
+        } else if(this.formRegister.u_password==this.formRegister.u_passwordR){
           this.$axios
           .post('/register', {
             u_no: this.formRegister.u_no,
             u_name: this.formRegister.u_name,
-            u_password: this.formRegister.u_password
+            u_password: this.formRegister.u_password,
+            u_type: this.formRegister.u_type
           })
           .then(successResponse => {
             this.responseResult = JSON.stringify(successResponse.data)

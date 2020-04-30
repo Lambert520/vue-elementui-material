@@ -29,6 +29,8 @@
         <el-table-column label="姓名" prop="u_name"></el-table-column>
 
         <el-table-column label="密码" prop="u_password" v-if="flag4"></el-table-column>
+        
+        <el-table-column label="用户类型" prop="u_type"></el-table-column>
 
         <!-- <el-table-column label="用户类型" prop="u_type"></el-table-column> -->
 
@@ -79,6 +81,9 @@
           <el-form-item label="密码">
             <el-input v-model="addUser.u_password"></el-input>
           </el-form-item>
+          <el-form-item label="用户类型">
+            <el-input v-model="addUser.u_type"></el-input>
+          </el-form-item>
           <div class="addButton">
             <el-form-item>
               <el-button type="primary" @click="addPeople()">提交</el-button>
@@ -103,6 +108,9 @@
           </el-form-item>
           <el-form-item label="密码">
             <el-input v-model="changeList.u_password"></el-input>
+          </el-form-item>
+           <el-form-item label="用户类型">
+            <el-input v-model="changeList.u_type"></el-input>
           </el-form-item>
           <!-- <el-form-item label="电话">
             <el-input v-model="changeList.userTel"></el-input>
@@ -169,7 +177,8 @@ export default {
         {
           u_no:'',
           u_name: "",
-          u_password: ""
+          u_password: "",
+          u_type:""
           // userTel: "",
           // userSex: "",
           // deptName: ""
@@ -178,14 +187,16 @@ export default {
       changeList: [
         {
           u_name: "",
-          u_password: ""
+          u_password: "",
+          u_type:""
         }
       ],
       deleteList: [
         {
           u_no:'',
           u_name: "",
-          u_password: ""
+          u_password: "",
+          u_type:""
         }
       ],
       rules: {
@@ -236,7 +247,8 @@ export default {
         .post("/user", {
           u_no:_this.addUser.u_no,
           u_name: _this.addUser.u_name,
-          u_password: _this.addUser.u_password
+          u_password: _this.addUser.u_password,
+          u_type: _this.addUser.u_type
           // userTel: _this.addUser.userTel,
           // userSex: _this.addUser.userSex,
           // deptName: _this.addUser.deptName
@@ -267,7 +279,8 @@ export default {
         .put("/user", {
           u_no: _this.changeList.u_no,
           u_name: _this.changeList.u_name,
-          u_password: _this.changeList.u_password
+          u_password: _this.changeList.u_password,
+          u_type: _this.changeList.u_type
           // userTel: _this.changeList.userTel,
           // userSex: _this.changeList.userSex,
           // deptName: _this.changeList.deptName,

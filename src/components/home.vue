@@ -12,7 +12,7 @@
               <span slot="title" class="">学生宿舍管理系统</span>
             </el-menu-item>
             
-            <el-submenu index="2">
+            <!-- <el-submenu index="2">
               <template slot="title">
                 <i class="el-icon-aim"></i>
                 <span>宿舍管理员管理</span>
@@ -21,12 +21,12 @@
                 <el-menu-item index="/home/housemasterInfo">基本信息</el-menu-item>
               </el-menu-item-group>
 
-              <!-- <el-menu-item-group>
+              <el-menu-item-group>
                 <el-menu-item index="/home/housemasterAllot">人员分配</el-menu-item>
-              </el-menu-item-group> -->
-            </el-submenu>
+              </el-menu-item-group>
+            </el-submenu> -->
 
-            <el-submenu index="3">
+            <!-- <el-submenu index="3">
               <template slot="title">
                 <i class="el-icon-truck"></i>
                 <span>学生管理</span>
@@ -36,7 +36,7 @@
                 <el-menu-item index="/home/studentInfo">基本信息</el-menu-item>
               </el-menu-item-group>
 
-            </el-submenu>
+            </el-submenu> -->
 
             <el-submenu index="4">
               <template slot="title">
@@ -51,17 +51,17 @@
                 <el-menu-item index="/home/dormMember">舍员信息</el-menu-item>
               </el-menu-item-group> -->
 
-              <el-menu-item-group>
+              <!-- <el-menu-item-group>
                 <el-menu-item index="/home/sanitation">卫生情况</el-menu-item>
-              </el-menu-item-group>
+              </el-menu-item-group> -->
 
               <!-- <el-menu-item-group>
                 <el-menu-item index="/home/bed">就寝信息</el-menu-item>
               </el-menu-item-group> -->
 
-              <el-menu-item-group>
+              <!-- <el-menu-item-group>
                 <el-menu-item index="/home/repaired">报修记录</el-menu-item>
-              </el-menu-item-group>
+              </el-menu-item-group> -->
               <!-- <el-menu-item-group>
                 <el-menu-item index="/home/latereturn">晚归记录</el-menu-item>
               </el-menu-item-group> -->
@@ -85,7 +85,7 @@
               <el-menu-item-group>
                 <el-menu-item index="/home/dormMbr">基本信息</el-menu-item>
               </el-menu-item-group>
-              <el-menu-item-group>
+              <!-- <el-menu-item-group>
                 <el-menu-item index="/home/dormMbrCs">逃课记录</el-menu-item>
               </el-menu-item-group>
               <el-menu-item-group>
@@ -93,7 +93,7 @@
               </el-menu-item-group>
                <el-menu-item-group>
                 <el-menu-item index="/home/dormMbrNR">夜不归寝记录</el-menu-item>
-              </el-menu-item-group>
+              </el-menu-item-group> -->
               
                <!-- <el-menu-item-group>
                 <el-menu-item index="/home/dormMember">基本信息</el-menu-item>

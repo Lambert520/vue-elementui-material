@@ -28,7 +28,17 @@
 
         <el-table-column label="姓名" prop="s_name"></el-table-column>
 
+        <el-table-column label="班级" prop="s_class"></el-table-column>
+
+        <el-table-column label="班主任" prop="t_name"></el-table-column>
+
         <el-table-column label="是否为舍长" prop="is_dorm_header"></el-table-column>
+
+        <el-table-column label="违规操作">
+            <button @click="selectAttnClass()">逃课</button>
+            <button @click="selectUseElec()">违规用电</button>
+            <button @click="selectNotReturn()">夜不归寝</button>
+        </el-table-column>
 
         <!-- <el-table-column label="楼层数" prop="floor"></el-table-column>
 
@@ -72,6 +82,12 @@
           <el-form-item label="姓名">
             <el-input v-model="addDormitoryM.s_name"></el-input>
           </el-form-item>
+          <el-form-item label="班级">
+            <el-input v-model="addDormitoryM.s_class"></el-input>
+          </el-form-item>
+          <el-form-item label="班主任">
+            <el-input v-model="addDormitoryM.t_name"></el-input>
+          </el-form-item>
           <el-form-item label="舍长">
             <el-select v-model="addDormitoryM.is_dorm_header" placeholder="请选择">
               <el-option label="是" value="是"></el-option>
@@ -103,11 +119,14 @@
           <el-form-item label="姓名">
             <el-input v-model="changeList.s_name"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="密码">
-            <el-input v-model="changeList.passWord"></el-input>
-          </el-form-item> -->
           <el-form-item label="学号">
             <el-input v-model="changeList.s_no"></el-input>
+          </el-form-item>
+          <el-form-item label="班级">
+            <el-input v-model="changeList.s_class"></el-input>
+          </el-form-item>
+          <el-form-item label="班主任">
+            <el-input v-model="changeList.t_name"></el-input>
           </el-form-item>
           <el-form-item label="舍长">
             <el-select v-model="changeList.is_dorm_header" placeholder="请选择">
@@ -167,6 +186,8 @@ export default {
           d_no:'',
           s_no:'',
           s_name: "",
+          s_class:"",
+          t_name:"",
           is_dorm_header: ""
          
         }
@@ -176,6 +197,8 @@ export default {
           d_no:'',
           s_no:'',
           s_name: "",
+          s_class:"",
+          t_name:"",
           is_dorm_header: ""
           
         }
@@ -185,6 +208,8 @@ export default {
           d_no:'',
           s_no:'',
           s_name: "",
+          s_class:"",
+          t_name:"",
           is_dorm_header: ""
          
         }
@@ -220,6 +245,16 @@ export default {
   },
   inject: ["reload"],
   methods: {
+    selectAttnClass(){
+      this.$router.push({ path: "/home/dormMbrCs" });
+      console.log(_this.changeList.s_no)
+    },
+    selectUseElec(){
+      this.$router.push({ path: "/home/dormMbrElec" });
+    },
+    selectNotReturn(){
+      this.$router.push({ path: "/home/dormMbrNR" });
+    },
     showAddDM() {
       this.flag = !this.flag;
     },
@@ -231,6 +266,8 @@ export default {
           d_no:_this.addDormitoryM.d_no,
           s_no: _this.addDormitoryM.s_no,
           s_name: _this.addDormitoryM.s_name,
+          s_class: _this.addDormitoryM.s_class,
+          t_name: _this.addDormitoryM.t_name,
           is_dorm_header: _this.addDormitoryM.is_dorm_header
           // floor: _this.addDormitory.floor
         })
@@ -261,6 +298,8 @@ export default {
           d_no: _this.changeList.d_no,
           s_name: _this.changeList.s_name,
           s_no: _this.changeList.s_no,
+          s_class: _this.changeList.s_class,
+          t_name: _this.changeList.t_name,
           is_dorm_header: _this.changeList.is_dorm_header
           // floor: _this.changeList.floor
         })
