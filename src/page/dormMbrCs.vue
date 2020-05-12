@@ -1,18 +1,19 @@
 <template>
   <div class="people">
     <div class="topButton">
-      <el-button size="mini" @click="showAddC()" type="primary">添加逃课记录</el-button>
+      <el-button v-show="addCs1" size="mini" @click="showAddC()" type="primary">添加逃课记录</el-button>
 
-      <el-button size="mini" type="warning" @click="showChange()">修改</el-button>
+      <el-button v-show="editCs" size="mini" type="warning" @click="showChange()">修改</el-button>
 
       <!-- <el-button size="mini" type="info" @click="mShow()">查看密码</el-button> -->
 
-      <el-button size="mini" type="danger" @click="showDelete()">删除</el-button>
+      <el-button v-show="deleteCs" size="mini" type="danger" @click="showDelete()">删除</el-button>
     </div>
     <!-- 表格 -->
     <div class="list">
       <div class="search">
-        <el-input v-model="search" placeholder="请输入内容"></el-input>
+        <el-input v-model="search"  placeholder="请输入学号/宿舍号" ></el-input>
+        <el-button size="mini" type="number" @click="selctStudent()">查询</el-button>
       </div> 
 
       <el-table
@@ -22,7 +23,7 @@
         border
         @current-change="handleCurrentsChange"
       >
-      
+      <el-table-column label="编号" prop="id"></el-table-column>
         <el-table-column label="学号" prop="s_no"></el-table-column>
 
         <el-table-column label="宿舍号" prop="d_no"></el-table-column>
@@ -32,7 +33,7 @@
         <el-table-column label="逃课原因" prop="unattn_c_rsn"></el-table-column>
 
         <el-table-column label="逃课时间" prop="unattn_c_t"></el-table-column>
-
+		<el-table-column label="班主任" prop="t_name"></el-table-column>
       </el-table>
 
       <!-- 分页 -->
@@ -73,6 +74,12 @@
           <el-form-item label="逃课时间">
             <el-input v-model="addC.unattn_c_t"></el-input>
           </el-form-item>
+		  <el-form-item label="班主任">
+		   <el-select v-model="addC.t_name" placeholder="请选择班主任">
+		     <el-option value="" disabled selected>请选择</el-option>
+		     <el-option v-for="item in changeStuList" :key="0" :value="item.u_name" :label="item.u_name"></el-option>
+		   </el-select>
+		  </el-form-item>
           <div class="addButton">
             <el-form-item>
               <el-button type="primary" @click="addCs()">提交</el-button>
@@ -107,6 +114,13 @@
           <el-form-item label="逃课时间">
             <el-input v-model="changeList.unattn_c_t"></el-input>
           </el-form-item>
+		  <el-form-item label="班主任">
+		   <!-- <el-input v-model="changeList.t_name"></el-input> -->
+		   <el-select v-model="changeList.t_name" placeholder="请选择班主任">
+		     <el-option value="" disabled selected>请选择</el-option>
+		     <el-option v-for="item in changeStuList" :key="0" :value="item.u_name" :label="item.u_name"></el-option>
+		   </el-select>
+		  </el-form-item>
           <div class="addButton">
             <el-form-item>
               <el-button type="primary" @click="changeCs()">提交</el-button>
@@ -148,6 +162,9 @@ export default {
       flag2: false,
       flag3: false,
       flag4:false,
+	  addCs1:false,
+	  editCs:false,
+	  deleteCs:false,
       search: "",
       currentPage: 1, //初始页
       pagesize: 5,
@@ -188,13 +205,42 @@ export default {
           { required: true, message: "请输入学号", trigger: "blur" },
           { max: 11, message: "不能大于11个字符", trigger: "blur" }
         ]
-      }
+      },
+	  list:[],
+	  changeStuList:[]
     };
   },
   created() {
     let _this = this;
+	let val = this.$route.query.val;
+	let srcStr ="/dormmbrcs";
+	
+	let u_type = this.$store.getters.userNType;
+	let u_no = this.$store.getters.userNo;
+	let u_name = this.$store.getters.userName;
+	let dNo = this.$store.getters.dNo;
+	if(u_type == '管理员'){
+		_this.addCs1 = true;
+		_this.editCs = true;
+		_this.deleteCs = true;
+	} else if(u_type == '舍长'){
+		_this.addCs1 = true;
+		_this.editCs = true;
+		_this.deleteCs = true;
+	}
+	
+	if(u_type == "舍长"){
+		srcStr = srcStr+"?sz=" +encodeURIComponent(dNo);
+	} else if(u_type == "班主任"){
+		srcStr = srcStr+"?bzr=" +encodeURIComponent(u_name);
+	} else {
+		if(val != '' && val != undefined){
+			srcStr = srcStr + "?s_no=" + val;
+		}
+	}
+	
     this.$axios
-      .get("/dormmbrcs")
+      .get(srcStr)
       .then(function(res) {
         if (res.data) {
           _this.user = res.data;
@@ -206,9 +252,45 @@ export default {
           console.log(err.response);
         }
       });
+	  
+	  this.$axios
+	    .get("/getUser?u_type=班主任")
+	    .then(res => {
+	      if (res.data.code === 200) {
+	  					  console.log(res);
+	  	  				  _this.list = res.data.data;
+	  					  _this.changeStuList = res.data.data;
+	  					  console.log(_this.list);
+	      }
+	    })
+	    .catch(function(err) {
+	      if (err.response) {
+	        console.log(err.response);
+	        this.$message("后台连接失败");
+	      }
+	    });
   },
   inject: ["reload"],
   methods: {
+	  selctStudent(){
+		  let _this = this;
+		  this.$axios
+		    .get("/dormmbrcs?ssh=" + encodeURIComponent(_this.search))
+		    .then(function(res) {
+		      if (res.data) {
+		        _this.user = res.data;
+		        // console.log(res.data)
+		      }
+		    })
+		    .catch(function(err) {
+		      if (err.response) {
+		        console.log(err.response);
+		      }
+		    });
+	  },
+	  goback(){
+		  this.$router.go(-1);//返回上一层
+	  },
     showAddC() {
       this.flag = !this.flag;
     },
@@ -216,12 +298,13 @@ export default {
       if(this.addC.s_no){
          let _this = this;
       this.$axios
-        .post("/dormmbrcs", {
+        .post("/dormmbrcs?ssh=" + encodeURIComponent(_this.search), {
           d_no:_this.addC.d_no,
           s_no: _this.addC.s_no,
           s_name: _this.addC.s_name,
           unattn_c_rsn: _this.addC.unattn_c_rsn,
-          unattn_c_t: _this.addC.unattn_c_t
+          unattn_c_t: _this.addC.unattn_c_t,
+		  t_name:_this.addC.t_name
         })
         .then(res => {
           if (res.data.code === 200) {
@@ -231,7 +314,9 @@ export default {
             // this.$router.go(0)
             this.reload();
             console.log(_this.addC.d_no)
-          }
+          } else {
+			   this.$message("添加失败");
+		  }
         })
         .catch(function(err) {
           if (err.response) {
@@ -247,11 +332,13 @@ export default {
       let _this = this;
       this.$axios
         .put("/dormmbrcs", {
-          d_no: _this.changeList.d_no,
+			id: _this.changeList.id,
+		  d_no: _this.changeList.d_no,
           s_no: _this.changeList.s_no,
           s_name: _this.changeList.s_name,
           unattn_c_rsn: _this.changeList.unattn_c_rsn,
-          unattn_c_t: _this.changeList.unattn_c_t
+          unattn_c_t: _this.changeList.unattn_c_t,
+		  t_name: _this.changeList.t_name
         })
         .then(res => {
           if (res.data.code === 200) {
@@ -276,7 +363,7 @@ export default {
       this.$axios
         .delete("/dormmbrcs", {
           data: {
-            s_no: _this.deleteList.s_no
+            id: _this.deleteList.id
           }
         })
         .then(res => {

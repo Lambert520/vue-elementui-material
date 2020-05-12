@@ -1,13 +1,14 @@
 <template>
   <div class="people">
     <div class="topButton">
-      <el-button size="mini" @click="showAddR()" type="primary">添加报修记录</el-button>
+      <el-button v-show="addBtn" size="mini" @click="showAddR()" type="primary">添加报修记录</el-button>
 
-      <el-button size="mini" type="warning" @click="showChange()">修改</el-button>
+      <el-button v-show="editBtn" size="mini" type="warning" @click="showChange()">修改</el-button>
 
       <!-- <el-button size="mini" type="info" @click="mShow()">查看密码</el-button> -->
 
-      <el-button size="mini" type="danger" @click="showDelete()">删除</el-button>
+      <el-button v-show="deleteBtn" size="mini" type="danger" @click="showDelete()">删除</el-button>
+	  <el-button size="mini" type="info" @click="goback()">返回</el-button>
     </div>
     <!-- 表格 -->
     <div class="list">
@@ -145,6 +146,9 @@ export default {
       flag2: false,
       flag3: false,
       flag4:false,
+	  addBtn:true,
+	  editBtn:true,
+	  deleteBtn:true,
       search: "",
       currentPage: 1, //初始页
       pagesize: 5,
@@ -197,8 +201,15 @@ export default {
   },
   created() {
     let _this = this;
+	let u_type = this.$store.getters.userNType;
+	if(u_type == "班主任"){
+			  _this.addBtn = false;
+			  _this.editBtn = false;
+			  _this.deleteBtn = false;
+	}
+	let val = this.$route.query.val;
     this.$axios
-      .get("/repaire")
+      .get("/repaire?ssh=" + encodeURIComponent(val))
       .then(function(res) {
         if (res.data) {
           _this.user = res.data;
@@ -249,6 +260,7 @@ export default {
       let _this = this;
       this.$axios
         .put("/repaire", {
+			repaired_id: _this.changeList.repaired_id,
           d_no: _this.changeList.d_no,
           repaired_item: _this.changeList.repaired_item,
           commit_time: _this.changeList.commit_time,
@@ -275,7 +287,7 @@ export default {
       this.$axios
         .delete("/repaire", {
           data: {
-            d_no: _this.deleteList.d_no
+            repaired_id: _this.changeList.repaired_id,
           }
         })
         .then(res => {
@@ -292,7 +304,9 @@ export default {
           }
         });
     },
-
+goback(){
+	this.$router.go(-1);//返回上一层
+},
     showDelete() {
       if (this.deleteList.d_no) {
         this.flag3 = !this.flag3;

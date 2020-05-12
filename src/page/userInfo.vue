@@ -1,19 +1,20 @@
 <template>
   <div class="people">
     <div class="topButton">
-      <el-button size="mini" @click="showAddUser()" type="primary">添加人员</el-button>
+      <el-button v-show="addPerson" size="mini" @click="showAddUser()" type="primary">添加人员</el-button>
 
-      <el-button size="mini" type="warning" @click="showChange()">修改</el-button>
+      <el-button v-show="editPerson" size="mini" type="warning" @click="showChange()">修改</el-button>
 
       <el-button size="mini" type="info" @click="mShow()">查看密码</el-button>
 
-      <el-button size="mini" type="danger" @click="showDelete()">删除</el-button>
+      <el-button v-show="deletePerson" size="mini" type="danger" @click="showDelete()">删除</el-button>
     </div>
     <!-- 表格 -->
-    <div class="list">
-      <!-- <div class="search">
-        <el-input v-model="search" placeholder="请输入内容"></el-input>
-      </div>-->
+    <div class="list" >
+      <div class="search" v-show="searchDiv">
+        <el-input v-model="search" placeholder="请输入工号/学号/姓名"></el-input>
+		<el-button size="mini" type="number" @click="selctUser()">查询</el-button>
+      </div>
 
       <el-table
         :data="user.slice((currentPage-1)*pagesize,currentPage*pagesize)"
@@ -22,7 +23,7 @@
         border
         @current-change="handleCurrentsChange"
       >
-        <!-- <el-table-column label="编号" prop="u_id"></el-table-column> -->
+        <el-table-column label="编号" prop="id"></el-table-column>
 
         <el-table-column label="工号" prop="u_no"></el-table-column>
 
@@ -82,7 +83,10 @@
             <el-input v-model="addUser.u_password"></el-input>
           </el-form-item>
           <el-form-item label="用户类型">
-            <el-input v-model="addUser.u_type"></el-input>
+            <el-select v-model="addUser.u_type" placeholder="请选择角色">
+              <el-option label="管理员" value="管理员"></el-option>
+              <el-option label="班主任" value="班主任"></el-option>
+            </el-select>
           </el-form-item>
           <div class="addButton">
             <el-form-item>
@@ -104,14 +108,21 @@
       <div class="change">
         <el-form ref="form" :model="changeList" label-width="80px">
           <el-form-item label="姓名">
-            <el-input v-model="changeList.u_name"></el-input>
+            <el-input v-model="changeList.u_name" :disabled="disabledUName"></el-input>
           </el-form-item>
           <el-form-item label="密码">
             <el-input v-model="changeList.u_password"></el-input>
           </el-form-item>
            <el-form-item label="用户类型">
-            <el-input v-model="changeList.u_type"></el-input>
+			<el-select v-model="changeList.u_type" :disabled="disabledUType" placeholder="请选择角色">
+			  <el-option label="管理员" value="管理员"></el-option>
+			  <el-option label="班主任" value="班主任"></el-option>
+			  <el-option label="舍长" value="舍长"></el-option>
+			  <el-option label="学生" value="学生"></el-option>
+			  
+			</el-select>
           </el-form-item>
+		  
           <!-- <el-form-item label="电话">
             <el-input v-model="changeList.userTel"></el-input>
           </el-form-item>
@@ -170,6 +181,12 @@ export default {
       flag2: false,
       flag3: false,
       flag4:false,
+	  addPerson:false,
+	  editPerson:true,
+	  deletePerson:false,
+	  searchDiv:false,
+	  disabledUName:true,
+	  disabledUType:true,
       search: "",
       currentPage: 1, //初始页
       pagesize: 5,
@@ -193,6 +210,7 @@ export default {
       ],
       deleteList: [
         {
+			id:'',
           u_no:'',
           u_name: "",
           u_password: "",
@@ -221,8 +239,10 @@ export default {
   },
   created() {
     let _this = this;
+	let u_type = this.$store.getters.userNType;
+	let u_no = this.$store.getters.userNo;
     this.$axios
-      .get("/user")
+      .get("/user?u_no=" + u_no +"&u_type=" + u_type)
       .then(function(res) {
         if (res.data) {
           _this.user = res.data;
@@ -234,9 +254,41 @@ export default {
           console.log(err.response);
         }
       });
+	  
+	  if(u_type == "管理员"){
+		  _this.addPerson = true;
+		  _this.editPerson = true;
+		  _this.deletePerson = true;
+		  _this.searchDiv = true;
+		  _this.disabledUName=false;
+		  _this.disabledUType=false;
+	  } else if(u_type == "班主任"){
+		  _this.editPerson = true;
+	  } else if(u_type == "舍长"){
+		  _this.editPerson = true;
+	  }
   },
   inject: ["reload"],
   methods: {
+	  selctUser(){
+		  this.currentPage = 1;
+		  let _this = this;
+		  let u_type = this.$store.getters.userNType;
+		  let u_no = this.$store.getters.user_no;
+		  this.$axios
+		    .get("/user?u_no=" + u_no +"&u_type=" + u_type + "&u_name=" + encodeURIComponent( _this.search))
+		    .then(function(res) {
+		      if (res.data) {
+		        _this.user = res.data;
+		        // console.log(res.data)
+		      }
+		    })
+		    .catch(function(err) {
+		      if (err.response) {
+		        console.log(err.response);
+		      }
+		    });
+	  },
     showAddUser() {
       this.flag = !this.flag;
     },
@@ -261,7 +313,9 @@ export default {
             // this.$router.go(0)
             this.reload();
             console.log(_this.addUser.u_no)
-          }
+          } else {
+			  this.$message(res.data.message);
+		  }
         })
         .catch(function(err) {
           if (err.response) {
@@ -277,6 +331,7 @@ export default {
       let _this = this;
       this.$axios
         .put("/user", {
+			id: _this.changeList.id,
           u_no: _this.changeList.u_no,
           u_name: _this.changeList.u_name,
           u_password: _this.changeList.u_password,
@@ -303,15 +358,16 @@ export default {
         });
     },
     deleteInfo() {
+		let _this = this;
+		console.log(_this.deleteList);
       if(this.deleteList.u_no=='0001'){
         this.$message('没有权限')
       }else{
-      let _this = this;
-      console.log(_this.deleteList.u_no);
+      console.log(_this.deleteList);
       this.$axios
         .delete("/user", {
           data: {
-            u_no: _this.deleteList.u_no
+            id: _this.deleteList.id
           }
         })
         .then(res => {

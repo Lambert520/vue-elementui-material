@@ -47,7 +47,7 @@
 
           <el-form-item size="small" class="me-login-button">
             <el-button type="primary" class="login-button" @click="denglu">登陆</el-button>
-            <el-button type="primary" class="login-button" @click="zhuce">注册</el-button>
+            <!-- <el-button type="primary" class="login-button" @click="zhuce">注册</el-button> -->
             
           </el-form-item>
         </el-form>
@@ -103,8 +103,15 @@ export default {
           if (res.data.code === 200) {
             this.$router.push({ path: "/home/first" });
             this.$store.commit("handleUserName", res.data.data.u_name);
+			 this.$store.commit("handleUserType", res.data.data.u_type);
+			  this.$store.commit("handleUserNo", res.data.data.u_no);
+			  if(res.data.data.u_type == "舍长"){
+				this.$store.commit("handleSsh", res.data.data.d_no);
+			  }
             this.$message("登陆成功");
-          }
+          } else {
+			  this.$message(res.data.message);
+		  }
         })
         .catch(err => {
           this.$message("账号密码有误");

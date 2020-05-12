@@ -1,13 +1,15 @@
 <template>
   <div class="people">
     <div class="topButton">
-      <el-button size="mini" @click="showAddSA()" type="primary">添加卫生情况</el-button>
+      <el-button v-show="addBtn" size="mini" @click="showAddSA()" type="primary">添加卫生情况</el-button>
 
-      <el-button size="mini" type="warning" @click="showChange()">修改</el-button>
+      <el-button v-show="editBtn" size="mini" type="warning" @click="showChange()">修改</el-button>
 
       <!-- <el-button size="mini" type="info" @click="mShow()">查看密码</el-button> -->
 
-      <el-button size="mini" type="danger" @click="showDelete()">删除</el-button>
+      <el-button v-show="deleteBtn" size="mini" type="danger" @click="showDelete()">删除</el-button>
+	  
+	   <el-button size="mini" type="info" @click="goback()">返回</el-button>
     </div>
     <!-- 表格 -->
     <div class="list">
@@ -22,7 +24,7 @@
         border
         @current-change="handleCurrentsChange"
       >
-        <!-- <el-table-column label="编号" prop="sanitary_condition_id"></el-table-column> -->
+        <el-table-column label="编号" prop="sanitary_condition_id"></el-table-column>
 
         <el-table-column label="宿舍号" prop="d_no"></el-table-column>
 
@@ -133,6 +135,9 @@ export default {
       flag2: false,
       flag3: false,
       flag4:false,
+	  addBtn:true,
+	  editBtn:true,
+	  deleteBtn:true,
       search: "",
       currentPage: 1, //初始页
       pagesize: 5,
@@ -178,9 +183,19 @@ export default {
     };
   },
   created() {
-    let _this = this;
+	  let _this = this;
+	  
+	  let u_type = this.$store.getters.userNType;
+	  if(u_type == "班主任"){
+		  _this.addBtn = false;
+		  _this.editBtn = false;
+		  _this.deleteBtn = false;
+	  }
+	 let val = this.$route.query.val;
+	  console.log("参数:" + val);
+    
     this.$axios
-      .get("/sanitation")
+      .get("/sanitation?ssh=" + encodeURIComponent(val))
       .then(function(res) {
         if (res.data) {
           _this.user = res.data;
@@ -231,6 +246,7 @@ export default {
       let _this = this;
       this.$axios
         .put("/sanitation", {
+			sanitary_condition_id: _this.changeList.sanitary_condition_id,
           d_no: _this.changeList.d_no,
           tast_time: _this.changeList.tast_time,
           tast_result: _this.changeList.tast_result
@@ -257,7 +273,7 @@ export default {
       this.$axios
         .delete("/sanitation", {
           data: {
-            d_no: _this.deleteList.d_no
+            sanitary_condition_id: _this.deleteList.sanitary_condition_id
           }
         })
         .then(res => {
@@ -274,7 +290,9 @@ export default {
           }
         });
     },
-
+	goback(){
+		this.$router.go(-1);//返回上一层
+	},
     showDelete() {
       if (this.deleteList.d_no) {
         this.flag3 = !this.flag3;

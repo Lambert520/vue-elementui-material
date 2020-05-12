@@ -38,7 +38,7 @@
 
             </el-submenu> -->
 
-            <el-submenu index="4">
+            <el-submenu index="4" v-show="ssgl">
               <template slot="title">
                 <i class="el-icon-shopping-bag-1"></i>
                 <span>宿舍管理</span>
@@ -76,7 +76,7 @@
               </el-menu-item-group> -->
             </el-submenu>
 
-            <el-submenu index="5">
+            <el-submenu index="5" v-show="cygl">
               <template slot="title">
                 <i class="el-icon-truck"></i>
                 <span>宿舍成员管理</span>
@@ -84,6 +84,9 @@
 
               <el-menu-item-group>
                 <el-menu-item index="/home/dormMbr">基本信息</el-menu-item>
+				<el-menu-item index="/home/dormMbrCs">逃课</el-menu-item>
+				<el-menu-item index="/home/dormMbrElec">违规用电</el-menu-item>
+				<el-menu-item index="/home/dormMbrNR">夜不归寝</el-menu-item>
               </el-menu-item-group>
               <!-- <el-menu-item-group>
                 <el-menu-item index="/home/dormMbrCs">逃课记录</el-menu-item>
@@ -107,7 +110,7 @@
 
             </el-submenu>
 
-            <el-submenu index="6">
+            <el-submenu index="6" v-show="yhgl">
               <template slot="title">
                 <i class="el-icon-shopping-bag-1"></i>
                 <span>用户管理</span>
@@ -153,7 +156,10 @@ export default {
       height: {
         height: ""
       },
-      isCollapse: true
+      isCollapse: true,
+	  ssgl:false,
+	  cygl:false,
+	  yhgl:false
     };
   },
   components: {
@@ -166,6 +172,21 @@ export default {
   methods: {
     hh() {
       this.height.height = window.innerHeight - 60 + "px";
+	  let userType = this.$store.getters.userNType;
+	  if(userType == "学生"){
+		  this.yhgl = true;
+	  } else if(userType == "管理员"){
+		 this.ssgl=true;
+		 this.cygl=true;
+		 this.yhgl=true;
+	  } else if(userType == "班主任"){
+		 this.ssgl=true;
+		 this.cygl=true;
+		 this.yhgl=true;
+	  }  else if(userType == "舍长"){
+		 this.cygl=true;
+		 this.yhgl=true;
+	  }  
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);

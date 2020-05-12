@@ -1,18 +1,19 @@
 <template>
   <div class="people">
     <div class="topButton">
-      <el-button size="mini" @click="showAddD()" type="primary">添加宿舍</el-button>
+      <el-button size="mini" @click="showAddD()" type="primary" v-show="addss">添加宿舍</el-button>
 
-      <el-button size="mini" type="warning" @click="showChange()">修改</el-button>
+      <el-button size="mini" type="warning" @click="showChange()" v-show="editss">修改</el-button>
 
       <!-- <el-button size="mini" type="info" @click="mShow()">查看密码</el-button> -->
 
-      <el-button size="mini" type="danger" @click="showDelete()">删除</el-button>
+      <el-button size="mini" type="danger" @click="showDelete()" v-show="deletess">删除</el-button>
     </div>
     <!-- 表格 -->
     <div class="list">
       <div class="search">
-        <el-input v-model="search" placeholder="请输入内容"></el-input>
+        <el-input v-model="search" placeholder="请输入宿舍号"></el-input>
+		<el-button size="mini" type="number" @click="selctSs()">查询</el-button>
       </div> 
 
       <el-table
@@ -22,17 +23,25 @@
         border
         @current-change="handleCurrentsChange"
       >
+	  <el-table-column label="编号" prop="id"></el-table-column>
         <el-table-column label="宿舍号" prop="d_no"></el-table-column>
 
         <el-table-column label="宿舍楼号" prop="dorm_build_no"></el-table-column>
 
         <el-table-column label="楼层号" prop="floor"></el-table-column>
 
-        <el-table-column label="检查情况" >
+        <!-- <el-table-column label="检查情况" >
             <button @click="selectSanitation()">卫生</button>
             <button @click="selectRepaired()">报修</button>
-        </el-table-column>
-
+        </el-table-column> -->
+ <el-table-column label="检查情况" align="center" min-width="100">
+      <template slot-scope="scope">
+		   <button  @click="selectStudent(scope.row.d_no)">宿舍成员</button>
+        <button  @click="selectSanitation(scope.row.d_no)">卫生</button>
+        <button  @click="selectRepaired(scope.row.d_no)">报修</button>
+      </template>
+    </el-table-column>
+  </el-table>
         <!-- <el-table-column label="是否为舍长" prop="is_dorm_header"></el-table-column>
 
         <el-table-column label="楼层数" prop="floor"></el-table-column> -->
@@ -157,6 +166,9 @@ export default {
   data() {
     return {
       user: [],
+	  addss:true,
+	  editss:true,
+	  deletess:true,
       flag: false,
       flag2: false,
       flag3: false,
@@ -214,13 +226,42 @@ export default {
         }
       });
   },
+  mounted(){
+	let userType = this.$store.getters.userNType;
+	console.log(userType);
+	  if(userType == "班主任"){
+	  		  this.addss = false;
+			  this.editss = false;
+			  this.deletess = false;
+	  }  
+  },
   inject: ["reload"],
   methods: {
-    selectSanitation(){
-      this.$router.push({ path: "/home/sanitation" });
+	  selctSs(){
+		  this.currentPage = 1;
+		  let _this = this;
+		  this.$axios
+		    .get("/dormitory?ssh=" + encodeURIComponent(_this.search))
+		    .then(function(res) {
+		      if (res.data) {
+		        _this.user = res.data;
+		        // console.log(res.data)
+		      }
+		    })
+		    .catch(function(err) {
+		      if (err.response) {
+		        console.log(err.response);
+		      }
+		    });
+	  },
+	  selectStudent(val){
+		  this.$router.push({ path: "/home/dormMbr?d_no=" + encodeURIComponent(val) });
+	  },
+    selectSanitation(val){
+      this.$router.push({ path: "/home/sanitation?val=" + encodeURIComponent(val) });
     },
-    selectRepaired(){
-      this.$router.push({ path: "/home/repaired" });
+    selectRepaired(val){
+      this.$router.push({ path: "/home/repaired?val=" + encodeURIComponent(val) });
     },
     showAddD() {
       this.flag = !this.flag;
@@ -242,7 +283,9 @@ export default {
             // this.$router.go(0)
             this.reload();
             console.log(_this.addDormitory.d_no)
-          }
+          } else {
+			  this.$message(res.data.message);
+		  }
         })
         .catch(function(err) {
           if (err.response) {
@@ -258,6 +301,7 @@ export default {
       let _this = this;
       this.$axios
         .put("/dormitory", {
+			id: _this.changeList.id,
           d_no: _this.changeList.d_no,
           dorm_build_no: _this.changeList.dorm_build_no,
           floor: _this.changeList.floor
@@ -285,7 +329,7 @@ export default {
       this.$axios
         .delete("/dormitory", {
           data: {
-            d_no: _this.deleteList.d_no
+            id: _this.deleteList.id
           }
         })
         .then(res => {

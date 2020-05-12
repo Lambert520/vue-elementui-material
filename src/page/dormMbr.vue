@@ -1,18 +1,20 @@
 <template>
   <div class="people">
     <div class="topButton">
-      <el-button size="mini" @click="showAddDM()" type="primary">添加舍员</el-button>
+      <el-button v-show="addsy" size="mini" @click="showAddDM()" type="primary">添加舍员</el-button>
 
-      <el-button size="mini" type="warning" @click="showChange()">修改</el-button>
+      <el-button v-show="editsy" size="mini" type="warning" @click="showChange()">修改</el-button>
 
       <!-- <el-button size="mini" type="info" @click="mShow()">查看密码</el-button> -->
 
-      <el-button size="mini" type="danger" @click="showDelete()">删除</el-button>
+      <el-button v-show="deletesy" size="mini" type="danger" @click="showDelete()">删除</el-button>
+	  <el-button  size="mini" type="info" @click="goback()" v-show="backbutton">返回</el-button>
     </div>
     <!-- 表格 -->
     <div class="list">
-      <div class="search">
-        <el-input v-model="search" placeholder="请输入内容"></el-input>
+      <div class="search" v-show="searchsy">
+        <el-input v-model="search" placeholder="请输入学号或者宿舍号"></el-input>
+		 <el-button size="mini" type="number" @click="selctStudent()">查询</el-button>
       </div> 
 
       <el-table
@@ -22,7 +24,9 @@
         border
         @current-change="handleCurrentsChange"
       >
-        <el-table-column label="宿舍号" prop="d_no"></el-table-column>
+	  <el-table-column label="编号" prop="id"></el-table-column>
+        
+		<el-table-column label="宿舍号" prop="d_no"></el-table-column>
 
         <el-table-column label="学号" prop="s_no"></el-table-column>
 
@@ -34,12 +38,18 @@
 
         <el-table-column label="是否为舍长" prop="is_dorm_header"></el-table-column>
 
-        <el-table-column label="违规操作">
+      <!--  <el-table-column label="违规操作">
             <button @click="selectAttnClass()">逃课</button>
             <button @click="selectUseElec()">违规用电</button>
             <button @click="selectNotReturn()">夜不归寝</button>
-        </el-table-column>
-
+        </el-table-column> -->
+<el-table-column label="违规操作" align="center" min-width="100">
+      <template slot-scope="scope">
+        <button  @click="selectAttnClass(scope.row.s_no)">逃课</button>
+        <button  @click="selectUseElec(scope.row.s_no)">违规用电</button>
+		<button  @click="selectNotReturn(scope.row.s_no)">夜不归寝</button>
+      </template>
+    </el-table-column>
         <!-- <el-table-column label="楼层数" prop="floor"></el-table-column>
 
         <el-table-column label="楼层数" prop="floor"></el-table-column>
@@ -86,7 +96,11 @@
             <el-input v-model="addDormitoryM.s_class"></el-input>
           </el-form-item>
           <el-form-item label="班主任">
-            <el-input v-model="addDormitoryM.t_name"></el-input>
+            <!-- <el-input v-model="addDormitoryM.t_name"></el-input> -->
+			<el-select v-model="addDormitoryM.t_name" placeholder="请选择班主任">
+			  <el-option value="" disabled selected>请选择</el-option>
+			  <el-option v-for="item in list" :key="0" :value="item.u_name" :label="item.u_name"></el-option>
+			</el-select>
           </el-form-item>
           <el-form-item label="舍长">
             <el-select v-model="addDormitoryM.is_dorm_header" placeholder="请选择">
@@ -126,7 +140,11 @@
             <el-input v-model="changeList.s_class"></el-input>
           </el-form-item>
           <el-form-item label="班主任">
-            <el-input v-model="changeList.t_name"></el-input>
+           <!-- <el-input v-model="changeList.t_name"></el-input> -->
+		   <el-select v-model="changeList.t_name" placeholder="请选择班主任">
+		     <el-option value="" disabled selected>请选择</el-option>
+		     <el-option v-for="item in changeStuList" :key="0" :value="item.u_name" :label="item.u_name"></el-option>
+		   </el-select>
           </el-form-item>
           <el-form-item label="舍长">
             <el-select v-model="changeList.is_dorm_header" placeholder="请选择">
@@ -178,6 +196,11 @@ export default {
       flag2: false,
       flag3: false,
       flag4:false,
+	  addsy:false,
+	  editsy:false,
+	  deletesy:false,
+	  searchsy:false,
+	  backbutton:false,
       search: "",
       currentPage: 1, //初始页
       pagesize: 5,
@@ -224,13 +247,41 @@ export default {
           { required: true, message: "请输入学号", trigger: "blur" },
           { max: 11, message: "不能大于11个字符", trigger: "blur" }
         ]
-      }
+      },
+	  list:[],
+	  changeStuList:[]
     };
   },
   created() {
     let _this = this;
+	let u_type = this.$store.getters.userNType;
+	let u_no = this.$store.getters.userNo;
+	let u_name = this.$store.getters.userName;
+	 /* else if(u_type == "舍长"){
+		src = "?ssh=" +encodeURIComponent(u_ssh);
+	} */ 
+	console.log(u_type);
+	var srcStr = "/dormitorymbr";
+	let dNo = this.$store.getters.dNo;
+	let d_no = this.$route.query.d_no;
+	if(d_no == undefined){
+		d_no = "";
+	}
+	if(d_no !="" && d_no != undefined){
+		_this.backbutton = true;
+	}
+	console.log("参数",d_no);
+	if(u_type == "班主任"){
+		srcStr = srcStr+"?b_name=" + u_name + "&u_type=" + u_type + "&ssh=" + encodeURIComponent(d_no);
+	} else if(u_type == "管理员"){
+		srcStr = srcStr+"?u_type=" + u_type + "&ssh=" + encodeURIComponent(d_no);
+		console.log("管理员地址",srcStr);
+	}  else if(u_type == "舍长"){
+		srcStr = srcStr+"?ssh=" + encodeURIComponent(dNo) + "&u_type=" + u_type;
+	}
+	console.log("地址",srcStr);
     this.$axios
-      .get("/dormitorymbr")
+      .get(srcStr)
       .then(function(res) {
         if (res.data) {
           _this.user = res.data;
@@ -242,18 +293,43 @@ export default {
           console.log(err.response);
         }
       });
+	  
+	  		 
+	  		  this.$axios
+	  		    .get("/getUser?u_type=班主任")
+	  		    .then(res => {
+	  		      if (res.data.code === 200) {
+					  console.log(res);
+	  				  _this.list = res.data.data;
+					  _this.changeStuList = res.data.data;
+					  console.log(_this.list);
+	  		      }
+	  		    })
+	  		    .catch(function(err) {
+	  		      if (err.response) {
+	  		        console.log(err.response);
+	  		        this.$message("后台连接失败");
+	  		      }
+	  		    });
+				
+	if(u_type == "管理员"){
+		this.addsy = true;
+		this.editsy=true;
+		this.deletesy=true;
+		this.searchsy=true;
+	}
   },
   inject: ["reload"],
   methods: {
-    selectAttnClass(){
-      this.$router.push({ path: "/home/dormMbrCs" });
+    selectAttnClass(val){
+      this.$router.push({ path: "/home/dormMbrCs?val=" + encodeURIComponent(val) });
       console.log(_this.changeList.s_no)
     },
-    selectUseElec(){
-      this.$router.push({ path: "/home/dormMbrElec" });
+    selectUseElec(val){
+      this.$router.push({ path: "/home/dormMbrElec?val=" + encodeURIComponent(val) });
     },
-    selectNotReturn(){
-      this.$router.push({ path: "/home/dormMbrNR" });
+    selectNotReturn(val){
+      this.$router.push({ path: "/home/dormMbrNR?val=" + encodeURIComponent(val) });
     },
     showAddDM() {
       this.flag = !this.flag;
@@ -279,7 +355,9 @@ export default {
             // this.$router.go(0)
             this.reload();
             console.log(_this.addDormitoryM.d_no)
-          }
+          } else {
+			  this.$message(res.data.message);
+		  }
         })
         .catch(function(err) {
           if (err.response) {
@@ -295,7 +373,8 @@ export default {
       let _this = this;
       this.$axios
         .put("/dormitorymbr", {
-          d_no: _this.changeList.d_no,
+			id: _this.changeList.id,
+		  d_no: _this.changeList.id,
           s_name: _this.changeList.s_name,
           s_no: _this.changeList.s_no,
           s_class: _this.changeList.s_class,
@@ -326,7 +405,7 @@ export default {
       this.$axios
         .delete("/dormitorymbr", {
           data: {
-            d_no: _this.deleteList.d_no
+            id: _this.deleteList.id
           }
         })
         .then(res => {
@@ -343,7 +422,9 @@ export default {
           }
         });
     },
-
+goback(){
+	this.$router.go(-1);//返回上一层
+},
     showDelete() {
       if (this.deleteList.d_no) {
         this.flag3 = !this.flag3;
@@ -400,6 +481,45 @@ export default {
     },
     mShow(){
        this.flag4 = !this.flag4;
+    },selctStudent(){
+		this.currentPage = 1;
+		let _this = this;
+		let u_type = this.$store.getters.userNType;
+		console.log(_this.search);
+		this.$axios
+		  .get("/dormitorymbr?s_no=" +encodeURIComponent( _this.search) + "&u_type=" + u_type)
+		  .then(function(res) {
+		    if (res.data) {
+		      _this.user = res.data;
+		      // console.log(res.data)
+		    }
+		  })
+		  .catch(function(err) {
+		    if (err.response) {
+		      console.log(err.response);
+		    }
+		  });
+     /* let _this = this;
+      this.$axios
+        .get("/dormitorymbr", {
+          data: {
+            s_no: _this.search
+          }
+        })
+        .then(res => {
+          // if (res.data.code === 200) {
+          //   this.$message("删除成功");
+          //   this.flag3 = !this.flag3;
+          //   this.reload();
+          // }
+          // this.reload();
+        })
+        .catch(err => {
+          if (err.response) {
+            console.log(err.response);
+            this.$message("后台连接失败");
+          }
+        }); */
     }
   }
 };

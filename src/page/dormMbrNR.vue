@@ -1,18 +1,19 @@
 <template>
   <div class="people">
     <div class="topButton">
-      <el-button size="mini" @click="showAddLR()" type="primary">添加夜不归寝情况</el-button>
+      <el-button v-show="addNr" size="mini" @click="showAddLR()" type="primary">添加夜不归寝情况</el-button>
 
-      <el-button size="mini" type="warning" @click="showChange()">修改</el-button>
+      <el-button v-show="editNr" size="mini" type="warning" @click="showChange()">修改</el-button>
 
       <!-- <el-button size="mini" type="info" @click="mShow()">查看密码</el-button> -->
 
-      <el-button size="mini" type="danger" @click="showDelete()">删除</el-button>
+      <el-button v-show="deleteNr" size="mini" type="danger" @click="showDelete()">删除</el-button>
     </div>
     <!-- 表格 -->
     <div class="list">
       <div class="search">
-        <el-input v-model="search" placeholder="请输入内容"></el-input>
+        <el-input v-model="search" placeholder="请输入学号/宿舍号"></el-input>
+		<el-button size="mini" type="number" @click="selctStudent()">查询</el-button>
       </div> 
 
       <el-table
@@ -22,6 +23,7 @@
         border
         @current-change="handleCurrentsChange"
       >
+	   <el-table-column label="编号" prop="id"></el-table-column>
         <el-table-column label="学号" prop="s_no"></el-table-column>
 
         <el-table-column label="宿舍号" prop="d_no"></el-table-column>
@@ -31,6 +33,8 @@
         <el-table-column label="夜不归寝时间" prop="not_return_time"></el-table-column>
 
         <el-table-column label="夜不归寝缘由" prop="not_return_reason"></el-table-column>
+		
+		 <el-table-column label="班主任" prop="t_name"></el-table-column>
 
       </el-table>
 
@@ -66,12 +70,18 @@
           <el-form-item label="姓名">
             <el-input v-model="addLR.s_name"></el-input>
           </el-form-item>
-          <el-form-item label="夜不归寝时间">
+          <el-form-item label="时间">
             <el-input v-model="addLR.not_return_time"></el-input>
           </el-form-item>
-          <el-form-item label="夜不归寝原因">
+          <el-form-item label="原因">
             <el-input v-model="addLR.not_return_reason"></el-input>
           </el-form-item>
+		  <el-form-item label="班主任">
+		   <el-select v-model="addLR.t_name" placeholder="请选择班主任">
+		     <el-option value="" disabled selected>请选择</el-option>
+		     <el-option v-for="item in changeStuList" :key="0" :value="item.u_name" :label="item.u_name"></el-option>
+		   </el-select>
+		  </el-form-item>
           <div class="addButton">
             <el-form-item>
               <el-button type="primary" @click="addLRI()">提交</el-button>
@@ -100,12 +110,19 @@
           <el-form-item label="姓名">
             <el-input v-model="changeList.s_name"></el-input>
           </el-form-item>
-          <el-form-item label="夜不归寝时间">
+          <el-form-item label="时间">
             <el-input v-model="changeList.not_return_time"></el-input>
           </el-form-item>
-          <el-form-item label="夜不归寝原因">
+          <el-form-item label="原因">
             <el-input v-model="changeList.not_return_reason"></el-input>
           </el-form-item>
+		  <el-form-item label="班主任">
+		   <!-- <el-input v-model="changeList.t_name"></el-input> -->
+		   <el-select v-model="changeList.t_name" placeholder="请选择班主任">
+		     <el-option value="" disabled selected>请选择</el-option>
+		     <el-option v-for="item in changeStuList" :key="0" :value="item.u_name" :label="item.u_name"></el-option>
+		   </el-select>
+		  </el-form-item>
           <div class="addButton">
             <el-form-item>
               <el-button type="primary" @click="changeLRI()">提交</el-button>
@@ -194,13 +211,41 @@ export default {
         //   { required: false, message: "请输入姓名", trigger: "blur" },
         //   { max: 10, message: "不能大于10个字符", trigger: "blur" }
         // ],
-      }
+      },
+	  list:[],
+	  changeStuList:[]
     };
   },
   created() {
     let _this = this;
+	let val = this.$route.query.val;
+	let srcStr ="/latereturn";
+	
+	let u_type = this.$store.getters.userNType;
+	let u_no = this.$store.getters.userNo;
+	let u_name = this.$store.getters.userName;
+	let dNo = this.$store.getters.dNo;
+	if(u_type == '管理员'){
+		_this.addNr = true;
+		_this.editNr = true;
+		_this.deleteNr = true;
+	} else if(u_type == '舍长'){
+		_this.addNr = true;
+		_this.editNr = true;
+		_this.deleteNr = true;
+	}
+	
+	if(u_type == "舍长"){
+		srcStr = srcStr+"?sz=" +encodeURIComponent(dNo);
+	} else if(u_type == "班主任"){
+		srcStr = srcStr+"?bzr=" +encodeURIComponent(u_name);
+	} else {
+		if(val != '' && val != undefined){
+			srcStr = srcStr + "?s_no=" + val;
+		}
+	}
     this.$axios
-      .get("/latereturn")
+      .get(srcStr)
       .then(function(res) {
         if (res.data) {
           _this.user = res.data;
@@ -212,9 +257,42 @@ export default {
           console.log(err.response);
         }
       });
+	  
+	  this.$axios
+	    .get("/getUser?u_type=班主任")
+	    .then(res => {
+	      if (res.data.code === 200) {
+	  					  console.log(res);
+	  	  				  _this.list = res.data.data;
+	  					  _this.changeStuList = res.data.data;
+	  					  console.log(_this.list);
+	      }
+	    })
+	    .catch(function(err) {
+	      if (err.response) {
+	        console.log(err.response);
+	        this.$message("后台连接失败");
+	      }
+	    });
   },
   inject: ["reload"],
   methods: {
+	  selctStudent(){
+		  let _this = this;
+		  this.$axios
+		    .get("/latereturn?ssh=" + encodeURIComponent(_this.search))
+		    .then(function(res) {
+		      if (res.data) {
+		        _this.user = res.data;
+		        // console.log(res.data)
+		      }
+		    })
+		    .catch(function(err) {
+		      if (err.response) {
+		        console.log(err.response);
+		      }
+		    });
+	  },
     showAddLR() {
       this.flag = !this.flag;
     },
@@ -227,7 +305,8 @@ export default {
           s_no:_this.addLR.s_no,
           s_name:_this.addLR.s_name,
           not_return_time: _this.addLR.not_return_time,
-          not_return_reason: _this.addLR.not_return_reason
+          not_return_reason: _this.addLR.not_return_reason,
+		  t_name: _this.addLR.t_name
         })
         .then(res => {
           if (res.data.code === 200) {
@@ -253,11 +332,13 @@ export default {
       let _this = this;
       this.$axios
         .put("/latereturn", {
+			id: _this.changeList.id,
           s_no: _this.changeList.s_no,
           d_no: _this.changeList.d_no,
           s_name: _this.changeList.s_name,
           not_return_time: _this.changeList.not_return_time,
-          not_return_reason: _this.changeList.not_return_reason
+          not_return_reason: _this.changeList.not_return_reason,
+		  t_name: _this.changeList.t_name
         })
         .then(res => {
           if (res.data.code === 200) {
@@ -281,7 +362,7 @@ export default {
       this.$axios
         .delete("/latereturn", {
           data: {
-            s_no: _this.deleteList.s_no
+            id: _this.deleteList.id
           }
         })
         .then(res => {
@@ -298,7 +379,9 @@ export default {
           }
         });
     },
-
+goback(){
+	this.$router.go(-1);//返回上一层
+},
     showDelete() {
       if (this.deleteList.s_no) {
         this.flag3 = !this.flag3;
