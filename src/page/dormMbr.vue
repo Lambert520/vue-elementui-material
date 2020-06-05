@@ -24,7 +24,7 @@
         border
         @current-change="handleCurrentsChange"
       >
-	  <el-table-column label="编号" prop="id"></el-table-column>
+	  <!-- <el-table-column label="编号" prop="id"></el-table-column> -->
         
 		<el-table-column label="宿舍号" prop="d_no"></el-table-column>
 
@@ -99,7 +99,7 @@
             <!-- <el-input v-model="addDormitoryM.t_name"></el-input> -->
 			<el-select v-model="addDormitoryM.t_name" placeholder="请选择班主任">
 			  <el-option value="" disabled selected>请选择</el-option>
-			  <el-option v-for="item in list" :key="0" :value="item.u_name" :label="item.u_name"></el-option>
+			  <el-option v-for="item in list" :key="item.u_name" :value="item.u_name" :label="item.u_name"></el-option>
 			</el-select>
           </el-form-item>
           <el-form-item label="舍长">
@@ -143,7 +143,7 @@
            <!-- <el-input v-model="changeList.t_name"></el-input> -->
 		   <el-select v-model="changeList.t_name" placeholder="请选择班主任">
 		     <el-option value="" disabled selected>请选择</el-option>
-		     <el-option v-for="item in changeStuList" :key="0" :value="item.u_name" :label="item.u_name"></el-option>
+		     <el-option v-for="item in changeStuList" :key="item.u_name" :value="item.u_name" :label="item.u_name"></el-option>
 		   </el-select>
           </el-form-item>
           <el-form-item label="舍长">
@@ -254,19 +254,16 @@ export default {
   },
   created() {
     let _this = this;
-	let u_type = this.$store.getters.userNType;
-	let u_no = this.$store.getters.userNo;
-	let u_name = this.$store.getters.userName;
-	 /* else if(u_type == "舍长"){
-		src = "?ssh=" +encodeURIComponent(u_ssh);
-	} */ 
-	console.log(u_type);
-	var srcStr = "/dormitorymbr";
-	let dNo = this.$store.getters.dNo;
-	let d_no = this.$route.query.d_no;
-	if(d_no == undefined){
-		d_no = "";
-	}
+    let u_type = this.$store.getters.userNType;
+    let u_no = this.$store.getters.userNo;
+    let u_name = this.$store.getters.userName;
+    console.log(u_type);
+    var srcStr = "/dormitorymbr";
+    let dNo = this.$store.getters.dNo;
+    let d_no = this.$route.query.d_no;
+    if(d_no == undefined){
+      d_no = "";
+    }
 	if(d_no !="" && d_no != undefined){
 		_this.backbutton = true;
 	}
@@ -481,13 +478,14 @@ goback(){
     },
     mShow(){
        this.flag4 = !this.flag4;
-    },selctStudent(){
+    },
+    selctStudent(){
 		this.currentPage = 1;
 		let _this = this;
 		let u_type = this.$store.getters.userNType;
 		console.log(_this.search);
 		this.$axios
-		  .get("/dormitorymbr?s_no=" +encodeURIComponent( _this.search) + "&u_type=" + u_type)
+		  .get("/dormitorymbr?s_no=" +encodeURIComponent( _this.search) + "&u_type=" + u_type)//用于uri当做参数传播
 		  .then(function(res) {
 		    if (res.data) {
 		      _this.user = res.data;

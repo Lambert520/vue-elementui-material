@@ -17,14 +17,13 @@
           <div class="band" style="animation-delay: -9s"></div>
         </div>
       </div>
-
-      <img src="../assets/logoko3.png" alt="">
+      <!-- <span class="title">管理系统</span> -->
     </div>
 
     <div class="login">
       <div class="login-box">
         <img src="../assets/first.jpg" alt />
-
+        <!-- <span class="title">学生宿舍管理系统</span> -->
         <el-form
           ref="loginForm"
           :model="loginForm"
@@ -103,10 +102,10 @@ export default {
           if (res.data.code === 200) {
             this.$router.push({ path: "/home/first" });
             this.$store.commit("handleUserName", res.data.data.u_name);
-			 this.$store.commit("handleUserType", res.data.data.u_type);
-			  this.$store.commit("handleUserNo", res.data.data.u_no);
-			  if(res.data.data.u_type == "舍长"){
-				this.$store.commit("handleSsh", res.data.data.d_no);
+			      this.$store.commit("handleUserType", res.data.data.u_type);
+			      this.$store.commit("handleUserNo", res.data.data.u_no);
+			    if(res.data.data.u_type == "舍长"){
+				    this.$store.commit("handleSsh", res.data.data.d_no);
 			  }
             this.$message("登陆成功");
           } else {
@@ -142,7 +141,7 @@ body {
   width: 100%;
   height: 100%;
   /* background: linear-gradient(91deg, #f1eefc, #9dc6ff 70%, #a5bcff); */
-  background-color: #112;
+  background-color:		#F0FFFF;
 
 }
 .logo {
@@ -172,9 +171,11 @@ body {
   border-radius: 10px;
 }
 .login-box img {
+  margin-top: 10px;
   width: 300px;
-  height: 200px;
+  height: 120px;
   position: relative;
+  margin-bottom: 50px;
   left: 13px;
   top: -40px;
 }
@@ -246,7 +247,7 @@ label {
   align-items: center;
   width: 100%;
   height: 100%;
-  background-color: #112;
+  background-color: 	#F5FFFA;
 }
 
 .container {
@@ -275,9 +276,15 @@ label {
   bottom: -6vw;
   width: 100%;
   height: 10%;
-  background: #112;
+  background: 	#FAFAD2;
   -webkit-animation: wave 10s linear infinite;
           animation: wave 10s linear infinite;
+}
+
+.title{
+  font-size: 25px;
+  color: 			#0000FF;
+  margin-left: 200px;
 }
 
 @-webkit-keyframes wave {

@@ -23,7 +23,7 @@
         border
         @current-change="handleCurrentsChange"
       >
-	   <el-table-column label="编号" prop="id"></el-table-column>
+	      <!-- <el-table-column label="编号" prop="id"></el-table-column> -->
         <el-table-column label="学号" prop="s_no"></el-table-column>
 
         <el-table-column label="宿舍号" prop="d_no"></el-table-column>
@@ -79,7 +79,7 @@
 		  <el-form-item label="班主任">
 		   <el-select v-model="addLR.t_name" placeholder="请选择班主任">
 		     <el-option value="" disabled selected>请选择</el-option>
-		     <el-option v-for="item in changeStuList" :key="0" :value="item.u_name" :label="item.u_name"></el-option>
+		     <el-option v-for="item in changeStuList" :key="item.u_name" :value="item.u_name" :label="item.u_name"></el-option>
 		   </el-select>
 		  </el-form-item>
           <div class="addButton">
@@ -120,7 +120,7 @@
 		   <!-- <el-input v-model="changeList.t_name"></el-input> -->
 		   <el-select v-model="changeList.t_name" placeholder="请选择班主任">
 		     <el-option value="" disabled selected>请选择</el-option>
-		     <el-option v-for="item in changeStuList" :key="0" :value="item.u_name" :label="item.u_name"></el-option>
+		     <el-option v-for="item in changeStuList" :key="item.u_name" :value="item.u_name" :label="item.u_name"></el-option>
 		   </el-select>
 		  </el-form-item>
           <div class="addButton">

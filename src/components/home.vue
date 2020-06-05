@@ -9,34 +9,8 @@
           <el-menu :default-active="$route.path" style="min-height: 100%;" router>
             <el-menu-item index="/home/first">
               <i class="el-icon-odometer"></i>
-              <span slot="title" class="">学生宿舍管理系统</span>
+              <span slot="title" class="">欢迎界面</span>
             </el-menu-item>
-            
-            <!-- <el-submenu index="2">
-              <template slot="title">
-                <i class="el-icon-aim"></i>
-                <span>宿舍管理员管理</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item index="/home/housemasterInfo">基本信息</el-menu-item>
-              </el-menu-item-group>
-
-              <el-menu-item-group>
-                <el-menu-item index="/home/housemasterAllot">人员分配</el-menu-item>
-              </el-menu-item-group>
-            </el-submenu> -->
-
-            <!-- <el-submenu index="3">
-              <template slot="title">
-                <i class="el-icon-truck"></i>
-                <span>学生管理</span>
-              </template>
-
-              <el-menu-item-group>
-                <el-menu-item index="/home/studentInfo">基本信息</el-menu-item>
-              </el-menu-item-group>
-
-            </el-submenu> -->
 
             <el-submenu index="4" v-show="ssgl">
               <template slot="title">
@@ -84,9 +58,9 @@
 
               <el-menu-item-group>
                 <el-menu-item index="/home/dormMbr">基本信息</el-menu-item>
-				<el-menu-item index="/home/dormMbrCs">逃课</el-menu-item>
-				<el-menu-item index="/home/dormMbrElec">违规用电</el-menu-item>
-				<el-menu-item index="/home/dormMbrNR">夜不归寝</el-menu-item>
+                <el-menu-item index="/home/dormMbrCs">逃课</el-menu-item>
+                <el-menu-item index="/home/dormMbrElec">违规用电</el-menu-item>
+                <el-menu-item index="/home/dormMbrNR">夜不归寝</el-menu-item>
               </el-menu-item-group>
               <!-- <el-menu-item-group>
                 <el-menu-item index="/home/dormMbrCs">逃课记录</el-menu-item>
@@ -112,7 +86,7 @@
 
             <el-submenu index="6" v-show="yhgl">
               <template slot="title">
-                <i class="el-icon-shopping-bag-1"></i>
+                <i class="el-icon-s-tools"></i>
                 <span>用户管理</span>
               </template>
               <el-menu-item-group>

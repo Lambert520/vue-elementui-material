@@ -23,7 +23,7 @@
         border
         @current-change="handleCurrentsChange"
       >
-	  <el-table-column label="编号" prop="id"></el-table-column>
+	  <!-- <el-table-column label="编号" prop="id"></el-table-column> -->
         <el-table-column label="宿舍号" prop="d_no"></el-table-column>
 
         <el-table-column label="宿舍楼号" prop="dorm_build_no"></el-table-column>
@@ -34,7 +34,7 @@
             <button @click="selectSanitation()">卫生</button>
             <button @click="selectRepaired()">报修</button>
         </el-table-column> -->
- <el-table-column label="检查情况" align="center" min-width="100">
+ <el-table-column label="成员及检查情况" align="center" min-width="100">
       <template slot-scope="scope">
 		   <button  @click="selectStudent(scope.row.d_no)">宿舍成员</button>
         <button  @click="selectSanitation(scope.row.d_no)">卫生</button>
@@ -46,7 +46,7 @@
 
         <el-table-column label="楼层数" prop="floor"></el-table-column> -->
 
-      </el-table>
+      <!-- </el-table> -->
 
       <!-- 分页 -->
       <div class="page">

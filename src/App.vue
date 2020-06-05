@@ -38,7 +38,7 @@ export default {
 <style>
 html,
 body {
-  background-color: #fff;
+  background-color: #00f7ff;
   height: 100%;
   margin: 0;
   padding: 0;

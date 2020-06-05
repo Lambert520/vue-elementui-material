@@ -8,9 +8,9 @@ import headTop from '@/components/headTop.vue'
 // import webMap from '@/page/webMap.vue'
 import navBar from '@/components/navBar.vue'
 import first from '@/page/first'
-import housemasterInfo from '@/page/housemasterInfo'
+// import housemasterInfo from '@/page/housemasterInfo'
 // import housemasterAllot from '@/page/housemasterAllot'
-import studentInfo from '@/page/studentInfo'
+// import studentInfo from '@/page/studentInfo'
 import dormInfo from '@/page/dormInfo'
 import sanitation from '@/page/sanitation'
 // import bed from '@/page/bed'
@@ -77,24 +77,24 @@ export default new Router({
         //   meta: { title: '物资类别' , requireAuth:true},
 
         // },
-        {
-          path: '/home/housemasterInfo',
-          name: 'housemasterInfo',
-          component : housemasterInfo,
-          meta:{title: '基本信息', requireAuth:true}
-        },
+        // {
+        //   path: '/home/housemasterInfo',
+        //   name: 'housemasterInfo',
+        //   component : housemasterInfo,
+        //   meta:{title: '基本信息', requireAuth:true}
+        // },
         // {
         //   path: '/home/housemasterAllot',
         //   name: 'housemasterAllot',
         //   component : housemasterAllot,
         //   meta:{title: '人员分配', requireAuth:true}
         // },
-        {
-          path: '/home/studentInfo',
-          name: 'studentInfo',
-          component : studentInfo,
-          meta:{title: '基本信息', requireAuth:true}
-        },
+        // {
+        //   path: '/home/studentInfo',
+        //   name: 'studentInfo',
+        //   component : studentInfo,
+        //   meta:{title: '基本信息', requireAuth:true}
+        // },
         {
           path: '/home/dormInfo',
           name: 'dormInfo',

@@ -5,7 +5,7 @@
         <div class="left">
           <!-- <img src="../assets/top.jpg" alt /> -->
           <!-- <el-button></el-button> -->
-          <p>DormManagementSystem</p>
+          <p>学生宿舍管理系统</p>
         </div>
 
         <!-- 全屏 -->

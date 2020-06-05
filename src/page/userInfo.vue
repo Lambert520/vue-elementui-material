@@ -23,7 +23,7 @@
         border
         @current-change="handleCurrentsChange"
       >
-        <el-table-column label="编号" prop="id"></el-table-column>
+        <!-- <el-table-column label="编号" prop="id"></el-table-column> -->
 
         <el-table-column label="工号" prop="u_no"></el-table-column>
 
@@ -68,7 +68,7 @@
 
     <div v-if="flag" class="addUser">
       <div class="title">
-        <h2>添加人员</h2>
+        <h2>添加用户</h2>
         <i class="el-icon-close" @click="clossAdd()"></i>
       </div>
       <div class="add">

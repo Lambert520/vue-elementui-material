@@ -23,14 +23,22 @@
           </el-form-item>
 
            <el-form-item label="输入用户类型" class="zhucela" prop="u_type">
-            <el-input placeholder="输入用户类型" v-model="formRegister.u_type"></el-input>
+            <el-select placeholder="选择用户类型" v-model="formRegister.u_type">
+              <el-option label="管理员" value="管理员"></el-option>
+            </el-select>
           </el-form-item>
+
+          <!-- <el-form-item label="用户类型">
+            <el-select v-model="addUser.u_type" placeholder="请选择角色">
+              <el-option label="管理员" value="管理员"></el-option>
+              <el-option label="班主任" value="班主任"></el-option>
+            </el-select>
+          </el-form-item> -->
         </el-form>
 
         <el-button type="primary" class="zhuce-button" @click="zhuce">注册</el-button>
-     </div>
-    
- </div>
+    </div>  
+  </div>
 </template>
 
 <script>
@@ -122,7 +130,7 @@
 </script>
 
 <style>
-  
+
   .zhuce-box{
   
     position: absolute;
@@ -131,7 +139,7 @@
 		transform: translate(-50%,-50%);
 		width: 400px;
 		padding: 40px;
-    background: rgba(0,0,0,.8);
+    background: rgba(0, 0, 0, 0.562);
 		box-sizing: border-box;
 		box-shadow: 0 15px 25px rgba(0,0,0,.5);
 		border-radius: 10px;
